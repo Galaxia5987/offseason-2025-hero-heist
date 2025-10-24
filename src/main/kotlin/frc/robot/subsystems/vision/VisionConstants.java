@@ -19,14 +19,25 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.wpilibj.Filesystem;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class VisionConstants {
     public static String LOG_PREFIX = "Subsystems/Vision/";
     // AprilTag layout
-    public static AprilTagFieldLayout aprilTagLayout =
-            AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
+    public static AprilTagFieldLayout aprilTagLayout;
+
+    static {
+        try {
+            aprilTagLayout = new AprilTagFieldLayout(new File(Filesystem.getDeployDirectory(), "apriltag-locations.json").toPath());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     // Camera names, must match names configured on coprocessor
     public static String turretOVName = "turret";
