@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger
 import frc.robot.applyLeds
 import frc.robot.drive
 import frc.robot.lib.extensions.*
+import frc.robot.lib.shooting.disableCompensation
 import frc.robot.robotRelativeBallPoses
 import frc.robot.subsystems.roller.Roller
 import frc.robot.subsystems.shooter.flywheel.Flywheel
@@ -43,9 +44,10 @@ fun bindRobotCommands() {
         and(ballsEmpty.and { !forceShoot })
             .onTrue(setIntaking(), stopShooting())
         and(!isInDeadZone).apply {
-            and(atShootingRotation, { !ShootOnMove.get() })
+            val shouldShootOnMove = Trigger { !disableCompensation.get() }
+            and(atShootingRotation, shouldShootOnMove.negate())
                 .onTrue(startShooting())
-            and { ShootOnMove.get() }.onTrue(startShooting())
+            and(shouldShootOnMove).onTrue(startShooting())
         }
         and((isInDeadZone).or(!atShootingRotation))
             .onTrue(driveToShootingPoint(disableAutoAlign::get))
@@ -57,7 +59,7 @@ fun bindRobotCommands() {
             onTrue(stopIntaking())
             and(robotRelativeBallPoses::isNotEmpty, { intakeByVision }).apply {
                 onTrue(Roller.intake())
-                and { !forceShoot }.onTrue(alignToBall (disableAutoAlign::get))
+                and { !forceShoot }.onTrue(alignToBall(disableAutoAlign::get))
             }
             and { !intakeByVision }.onTrue(Roller.intake())
         }
@@ -66,7 +68,7 @@ fun bindRobotCommands() {
                 onTrue(
                     Roller.intake(),
                     Hopper.start(),
-                    alignToBall (disableAutoAlign::get)
+                    alignToBall(disableAutoAlign::get)
                 )
             }
             onTrue(stopIntaking())
@@ -74,8 +76,7 @@ fun bindRobotCommands() {
         }
     }
     isStaticShooting.apply {
-        onTrue(Roller.intake(),
-            Hopper.start())
+        onTrue(Roller.intake(), Hopper.start())
         whileTrue(
             Hood.setAngle { STATIC_SHOOT_SETPOINT },
             Flywheel.setVelocity { STATIC_SHOOT_VELOCITY }

@@ -34,7 +34,6 @@ var hoodAngle = InterpolatingDouble(robotDistanceFromHub[m])
 var forceShoot = false
 var disableAutoAlign = LoggedNetworkBoolean("/Tuning/disableAutoAlign", false)
 var intakeByVision = false
-var ShootOnMove = LoggedNetworkBoolean("/Tuning/ShootOnMove", false)
 val compensatedShot: ShotData
     get() {
         val robotSpeeds =
@@ -113,13 +112,14 @@ fun stopIntakeByVision() = Commands.runOnce({ intakeByVision = false })
 
 fun setIntakeByVision() = Commands.runOnce({ intakeByVision = true })
 
-fun driveToShootingPoint(toRun:()-> Boolean = {false}): Command =
+fun driveToShootingPoint(toRun: () -> Boolean = { false }): Command =
     drive
         .defer {
             alignToPose(
                 Pose2d(deadZoneAlignmentSetpoint, swerveCompensationAngle)
             )
-        }.until(toRun)
+        }
+        .until(toRun)
         .named("Drive")
 
 fun startShooting() =
@@ -145,13 +145,14 @@ fun stopShooting() =
 fun stopIntaking() =
     parallel(Roller.stop(), Hopper.stop()).named(COMMAND_NAME_PREFIX)
 
-fun alignToBall(toRun:()-> Boolean = {false}): Command =
+fun alignToBall(toRun: () -> Boolean = { false }): Command =
     drive
         .defer {
-            alignToPose(globalBallPoses.first().toPose2d()).onlyIf(globalBallPoses::isNotEmpty)
-                .named(COMMAND_NAME_PREFIX)
+            alignToPose(globalBallPoses.first().toPose2d())
+                .onlyIf(globalBallPoses::isNotEmpty)
         }
         .until(toRun)
+        .named(COMMAND_NAME_PREFIX)
 
 fun hoodDefaultCommand() =
     Hood.setAngle {
