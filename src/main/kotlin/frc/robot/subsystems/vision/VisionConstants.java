@@ -14,13 +14,11 @@
 package frc.robot.subsystems.vision;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.Filesystem;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -33,7 +31,10 @@ public class VisionConstants {
 
     static {
         try {
-            aprilTagLayout = new AprilTagFieldLayout(new File(Filesystem.getDeployDirectory(), "apriltag-locations.json").toPath());
+            aprilTagLayout =
+                    new AprilTagFieldLayout(
+                            new File(Filesystem.getDeployDirectory(), "apriltag-locations.json")
+                                    .toPath());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
