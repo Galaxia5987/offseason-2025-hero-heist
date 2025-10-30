@@ -73,7 +73,7 @@ val angleFromRobotHub
 
 val turretAngleToHub: Angle
     get() =
-        (if (disableCompensation.get()) {
+        (if (!disableCompensation.get()) {
                 compensatedShot.turretAngle.measure
             } else angleFromRobotHub)
             .coerceIn(MIN_ANGLE, MAX_ANGLE)
