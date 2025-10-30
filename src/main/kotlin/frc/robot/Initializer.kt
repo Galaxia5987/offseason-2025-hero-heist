@@ -15,7 +15,6 @@ import frc.robot.subsystems.drive.gyroIOs.GyroIO
 import frc.robot.subsystems.drive.gyroIOs.GyroIOPigeon2
 import frc.robot.subsystems.drive.gyroIOs.GyroIOSim
 import frc.robot.subsystems.shooter.turret.Turret
-import frc.robot.subsystems.vision.Vision
 import frc.robot.subsystems.vision.VisionConstants
 import frc.robot.subsystems.vision.VisionConstants.turretOVName
 import frc.robot.subsystems.vision.VisionIOPhotonVision
@@ -107,4 +106,4 @@ private val visionIOs =
         Mode.REPLAY -> emptyList()
     }.toTypedArray()
 
-val vision = Vision(drive, *visionIOs)
+// val vision = Vision(drive, *visionIOs)
