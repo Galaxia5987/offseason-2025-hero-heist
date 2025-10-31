@@ -144,9 +144,12 @@ public class TunerConstants {
                             .withSteerFrictionVoltage(kSteerFrictionVoltage)
                             .withDriveFrictionVoltage(kDriveFrictionVoltage);
 
+    /**
+     Bevel gear to the right of the robot!!!!!!!!!!!!!!!!
+     **/
     private static final double[] absoluteEncoderOffsets =
             new double[] {
-                    0.8482913757007595,2.342388663101374,-2.9283693240736888,1.753340040553288
+                    -2.346990605465031,-0.7086991240031663,0.18867963690993386,-1.4097283440669042
             };
 
     // Front Left
