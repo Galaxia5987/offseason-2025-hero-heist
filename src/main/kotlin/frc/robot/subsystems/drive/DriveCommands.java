@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.InitializerKt;
+import frc.robot.lib.AllianceHelperKt;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.LinkedList;
@@ -89,8 +90,13 @@ public class DriveCommands {
                                     linearVelocity.getX() * drive.getMaxLinearSpeedMetersPerSec(),
                                     linearVelocity.getY() * drive.getMaxLinearSpeedMetersPerSec(),
                                     omega * drive.getMaxAngularSpeedRadPerSec());
+                    boolean isFlipped = AllianceHelperKt.getIS_RED();
                     drive.runVelocity(
-                            ChassisSpeeds.fromFieldRelativeSpeeds(speeds, drive.getRotation()));
+                            ChassisSpeeds.fromFieldRelativeSpeeds(
+                                    speeds,
+                                    isFlipped
+                                            ? drive.getRotation().plus(Rotation2d.fromDegrees(180))
+                                            : drive.getRotation()));
                 });
     }
 

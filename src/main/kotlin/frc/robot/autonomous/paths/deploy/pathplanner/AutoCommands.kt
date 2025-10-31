@@ -5,8 +5,8 @@ import com.pathplanner.lib.path.PathPlannerPath
 import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.Commands
-import frc.robot.IS_RED
 import frc.robot.drive
+import frc.robot.lib.IS_RED
 import frc.robot.lib.extensions.withRotation
 
 internal fun runPath(name: String, mirror: Boolean = false): Command {

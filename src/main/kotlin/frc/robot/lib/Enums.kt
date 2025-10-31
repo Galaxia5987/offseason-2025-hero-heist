@@ -1,4 +1,4 @@
-package frc.robot.lib.universal_motor
+package frc.robot.lib
 
 enum class Mode {
     REAL,

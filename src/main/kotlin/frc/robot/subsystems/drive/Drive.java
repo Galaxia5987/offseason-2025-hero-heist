@@ -49,9 +49,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.ConstantsKt;
-import frc.robot.Mode;
+import frc.robot.lib.AllianceHelperKt;
 import frc.robot.lib.LocalADStarAK;
 import frc.robot.lib.LoggedNetworkGains;
+import frc.robot.lib.Mode;
 import frc.robot.lib.sysid.SysIdable;
 import frc.robot.subsystems.drive.ModuleIOs.Module;
 import frc.robot.subsystems.drive.ModuleIOs.ModuleIO;
@@ -404,7 +405,7 @@ public class Drive extends SubsystemBase implements Vision.VisionConsumer, SysId
     }
 
     public void resetGyro() {
-        gyroIO.reset();
+        gyroIO.reset(AllianceHelperKt.getIS_RED() ? Degrees.of(180) : Degrees.zero());
     }
 
     /** Returns the module positions (turn angles and drive positions) for all of the modules. */
