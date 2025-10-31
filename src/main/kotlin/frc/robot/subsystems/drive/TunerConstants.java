@@ -146,7 +146,7 @@ public class TunerConstants {
 
     private static final double[] absoluteEncoderOffsets =
             new double[] {
-                -2.3239808936467465, -0.8958447801252144, 0.22856313739496054, -1.3913205746122765
+                    0.8482913757007595,2.342388663101374,-2.9283693240736888,1.753340040553288
             };
 
     // Front Left

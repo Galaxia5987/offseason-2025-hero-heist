@@ -404,8 +404,8 @@ public class Drive extends SubsystemBase implements Vision.VisionConsumer, SysId
         return states;
     }
 
-    public void resetGyro() {
-        gyroIO.reset(AllianceHelperKt.getIS_RED() ? Degrees.of(180) : Degrees.zero());
+    public void resetGyro(Angle resetHeading) {
+        gyroIO.reset(resetHeading);
     }
 
     /** Returns the module positions (turn angles and drive positions) for all of the modules. */

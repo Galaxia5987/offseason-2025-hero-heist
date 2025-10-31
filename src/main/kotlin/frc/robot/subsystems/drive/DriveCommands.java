@@ -23,6 +23,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
@@ -36,6 +37,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
+
+import static edu.wpi.first.units.Units.Degrees;
 
 public class DriveCommands {
     private static final Drive drive = InitializerKt.getDrive();
@@ -64,6 +67,14 @@ public class DriveCommands {
         return new Pose2d(new Translation2d(), linearDirection)
                 .transformBy(new Transform2d(linearMagnitude, 0.0, new Rotation2d()))
                 .getTranslation();
+    }
+
+    public static Command resetGyro(){
+        return drive.defer(() -> drive.runOnce(()->{
+            Angle resetHeading = AllianceHelperKt.getIS_RED() ? Degrees.of(180) : Degrees.zero();
+//            drive.resetOdometry(new Pose2d(drive.getPose().getTranslation(), new Rotation2d(resetHeading)));
+            drive.resetGyro(resetHeading);
+        })).ignoringDisable(true);
     }
 
     /**

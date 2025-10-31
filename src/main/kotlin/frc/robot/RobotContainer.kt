@@ -4,6 +4,7 @@ import com.pathplanner.lib.auto.AutoBuilder
 import com.pathplanner.lib.auto.NamedCommands
 import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.geometry.Rotation2d
+import edu.wpi.first.units.Units
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller
@@ -11,7 +12,9 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine
 import frc.robot.autonomous.paths.deploy.pathplanner.AC1SRP
 import frc.robot.autonomous.paths.deploy.pathplanner.BRP2
 import frc.robot.autonomous.paths.deploy.pathplanner.CC2C3
+import frc.robot.lib.IS_RED
 import frc.robot.lib.Mode
+import frc.robot.lib.extensions.deg
 import frc.robot.lib.extensions.enableAutoLogOutputFor
 import frc.robot.lib.extensions.sec
 import frc.robot.lib.extensions.volts
@@ -78,9 +81,7 @@ object RobotContainer {
         // reset swerve
         driverController.apply {
             options()
-                .onTrue(
-                    drive.runOnce { drive.resetGyro() }.ignoringDisable(true),
-                )
+                .onTrue(DriveCommands.resetGyro())
 
             circle().onTrue(setIntaking())
             L2().onTrue(Roller.intake()).onFalse(Roller.stop())
