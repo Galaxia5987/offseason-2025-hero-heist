@@ -1,6 +1,6 @@
 package frc.robot.subsystems.shooter.turret
 
-import com.ctre.phoenix6.controls.MotionMagicTorqueCurrentFOC
+import com.ctre.phoenix6.controls.MotionMagicVoltage
 import com.ctre.phoenix6.controls.VoltageOut
 import com.ctre.phoenix6.signals.NeutralModeValue
 import edu.wpi.first.units.measure.Angle
@@ -29,7 +29,7 @@ private val ligament =
 object Turret : SubsystemBase(), SysIdable {
     private val motor = UniversalTalonFX(MOTOR_ID, config = MOTOR_CONFIG)
     private val hallEffectSensor = DigitalInput(HALL_EFFECT_SENSOR_PORT)
-    private val motionMagicTorque = MotionMagicTorqueCurrentFOC(0.0)
+    private val motionMagicTorque = MotionMagicVoltage(0.0)
     @LoggedOutput var angleSetpoint = 0.deg
     private val voltageRequest = VoltageOut(0.0)
     val inputs

@@ -16,8 +16,7 @@ import frc.robot.lib.extensions.get
 val TOLERANCE = 2.deg
 const val HALL_EFFECT_SENSOR_PORT = 7
 const val MOTOR_ID = 7
-val GAINS =
-    Gains(kS = 0.19615, kV = 1.0235, kA = 0.067602, kP = 50.0, kD = 15.0)
+val GAINS = Gains(kP = 95.0, kD = 12.0, kS = 0.04, kV = 3.0, kA = 0.5)
 val STATOR_CURRENT_LIMIT = 80.amps
 val SUPPLY_CURRENT_LIMIT = 40.amps
 val SOFTWARE_LIMIT_CONFIG =
@@ -47,8 +46,8 @@ val MOTOR_CONFIG: TalonFXConfiguration =
             }
         MotionMagic =
             MotionMagicConfigs().apply {
-                MotionMagicCruiseVelocity = 60.0
-                MotionMagicAcceleration = 120.0
-                MotionMagicJerk = 1300.0
+                MotionMagicCruiseVelocity = 5.0
+                MotionMagicAcceleration = 10.0
+                MotionMagicJerk = 90.0
             }
     }
