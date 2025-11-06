@@ -24,8 +24,6 @@ import frc.robot.subsystems.shooter.flywheel.*
 import frc.robot.subsystems.shooter.hood.HOOD_ANGLE_BY_DISTANCE
 import frc.robot.subsystems.shooter.hood.Hood
 import frc.robot.subsystems.shooter.hopper.Hopper
-import frc.robot.subsystems.shooter.turret.MAX_ANGLE
-import frc.robot.subsystems.shooter.turret.MIN_ANGLE
 import kotlin.collections.map
 import org.littletonrobotics.junction.networktables.LoggedNetworkBoolean
 import org.team5987.annotation.LoggedOutput
@@ -67,21 +65,32 @@ val robotDistanceFromHub
 
 @LoggedOutput(path = COMMAND_NAME_PREFIX)
 val angleFromRobotHub
-    get() =
-        (drive.pose.translation.rotationToPoint(HUB_LOCATION) -
-                drive.pose.rotation)
-            .measure
+    get() = (drive.pose.translation.rotationToPoint(HUB_LOCATION))
 
+@LoggedOutput(path = COMMAND_NAME_PREFIX)
+val turretToRobotAngle
+    get() = drive.pose.rotation - angleFromRobotHub
+
+@LoggedOutput
 val turretAngleToHub: Angle
     get() =
         (if (!disableCompensation.get()) {
-                compensatedShot.turretAngle.measure
-            } else angleFromRobotHub)
-            .coerceIn(MIN_ANGLE, MAX_ANGLE)
+            compensatedShot.turretAngle.measure
+        } else turretToRobotAngle.measure)
+//            .coerceIn(
+//                SOFTWARE_LIMIT_CONFIG.ReverseSoftLimitThreshold,
+//                SOFTWARE_LIMIT_CONFIG.ForwardSoftLimitThreshold
+//            )
+
+@LoggedOutput(path = COMMAND_NAME_PREFIX)
+val robotToHub: Pose2d
+    get() = Pose2d(drive.pose.translation, angleFromRobotHub)
+
+@LoggedOutput val hub = Pose2d(HUB_LOCATION, Rotation2d())
 
 @LoggedOutput(path = COMMAND_NAME_PREFIX)
 val swerveCompensationAngle
-    get() = drive.rotation + Rotation2d(angleFromRobotHub - turretAngleToHub)
+    get() = drive.rotation + angleFromRobotHub - Rotation2d(turretAngleToHub)
 
 @LoggedOutput(path = COMMAND_NAME_PREFIX)
 val globalBallPoses

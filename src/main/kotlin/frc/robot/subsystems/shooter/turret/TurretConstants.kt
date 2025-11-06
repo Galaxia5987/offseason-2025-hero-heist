@@ -14,28 +14,28 @@ import frc.robot.lib.extensions.deg
 import frc.robot.lib.extensions.get
 
 val TOLERANCE = 2.deg
-val MAX_ANGLE = 135.deg
-val MIN_ANGLE = (-135).deg
 const val HALL_EFFECT_SENSOR_PORT = 7
 const val MOTOR_ID = 7
 val GAINS =
     Gains(kS = 0.19615, kV = 1.0235, kA = 0.067602, kP = 50.0, kD = 15.0)
 val STATOR_CURRENT_LIMIT = 80.amps
 val SUPPLY_CURRENT_LIMIT = 40.amps
+val SOFTWARE_LIMIT_CONFIG =
+    SoftwareLimitSwitchConfigs().apply {
+        ForwardSoftLimitEnable = true
+        ForwardSoftLimitThreshold = 0.625
+        ReverseSoftLimitEnable = true
+        ReverseSoftLimitThreshold = -0.005
+    }
 val MOTOR_CONFIG: TalonFXConfiguration =
     TalonFXConfiguration().apply {
         MotorOutput =
             MotorOutputConfigs().apply {
-                NeutralMode = NeutralModeValue.Brake
+                NeutralMode = NeutralModeValue.Coast
                 Inverted = InvertedValue.Clockwise_Positive
             }
-        SoftwareLimitSwitch =
-            SoftwareLimitSwitchConfigs().apply {
-                ForwardSoftLimitEnable = true
-                ForwardSoftLimitThreshold = 0.625
-                ReverseSoftLimitEnable = true
-                ReverseSoftLimitThreshold = 0.005
-            }
+        SoftwareLimitSwitch = SOFTWARE_LIMIT_CONFIG
+
         Feedback = FeedbackConfigs().apply { SensorToMechanismRatio = 56.0 }
         Slot0 = GAINS.toSlotConfig()
         CurrentLimits =
