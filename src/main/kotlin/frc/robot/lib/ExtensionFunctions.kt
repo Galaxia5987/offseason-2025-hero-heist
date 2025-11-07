@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.Commands
 import edu.wpi.first.wpilibj2.command.WrapperCommand
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController
+import kotlin.IllegalArgumentException
 import kotlin.math.abs
 import kotlin.math.hypot
 import kotlin.math.max
@@ -168,4 +169,14 @@ fun Color.colorSimilarity(color: Color): Double {
     val similarity = 1.0 - (distance / maxDistance)
 
     return similarity.coerceIn(0.0, 1.0)
+}
+
+fun <T : Comparable<T>> T.wrapAround(minimumValue: T, maximumValue: T): T {
+    if (minimumValue > maximumValue)
+        throw IllegalArgumentException(
+            "Cannot coerce value to an empty range: maximum $maximumValue is less than minimum $minimumValue."
+        )
+    if (this < minimumValue) return maximumValue
+    if (this > maximumValue) return minimumValue
+    return this
 }

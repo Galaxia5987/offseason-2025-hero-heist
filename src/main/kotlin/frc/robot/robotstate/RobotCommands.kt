@@ -17,6 +17,7 @@ import frc.robot.lib.named
 import frc.robot.lib.shooting.ShotData
 import frc.robot.lib.shooting.calculateShot
 import frc.robot.lib.shooting.disableCompensation
+import frc.robot.lib.wrapAround
 import frc.robot.robotRelativeBallPoses
 import frc.robot.subsystems.drive.alignToPose
 import frc.robot.subsystems.roller.Roller
@@ -70,7 +71,7 @@ val angleFromRobotToHub
 
 @LoggedOutput(path = COMMAND_NAME_PREFIX)
 val turretToRobotHubAngle
-    get() = drive.pose.rotation - angleFromRobotToHub + Rotation2d(180.deg)
+    get() = drive.pose.rotation - angleFromRobotToHub + Rotation2d.k180deg
 
 @LoggedOutput
 val turretAngleToHub: Angle
@@ -78,9 +79,9 @@ val turretAngleToHub: Angle
         (if (!disableCompensation.get()) {
                 compensatedShot.turretAngle.measure
             } else turretToRobotHubAngle.measure)
-            .coerceIn(
-                SOFTWARE_LIMIT_CONFIG.ReverseSoftLimitThreshold.rot,
-                SOFTWARE_LIMIT_CONFIG.ForwardSoftLimitThreshold.rot
+            .wrapAround(
+                SOFTWARE_LIMIT_CONFIG.ReverseSoftLimitThreshold.rad,
+                SOFTWARE_LIMIT_CONFIG.ForwardSoftLimitThreshold.rad
             )
 
 @LoggedOutput(path = COMMAND_NAME_PREFIX)
