@@ -27,8 +27,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
 
-import static frc.robot.lib.GeometryFactoriesKt.getRotation3d;
-
 /** IO implementation for real Limelight hardware. */
 public class VisionIOLimelight implements VisionIO {
     private final Supplier<Rotation2d> rotationSupplier;
@@ -46,7 +44,8 @@ public class VisionIOLimelight implements VisionIO {
      * @param name The configured name of the Limelight.
      * @param rotationSupplier Supplier for the current estimated rotation, used for MegaTag 2.
      */
-    public VisionIOLimelight(String name, Supplier<Rotation2d> rotationSupplier, Supplier<Angle> turretAngle) {
+    public VisionIOLimelight(
+            String name, Supplier<Rotation2d> rotationSupplier, Supplier<Angle> turretAngle) {
         var table = NetworkTableInstance.getDefault().getTable(name);
         this.rotationSupplier = rotationSupplier;
         orientationPublisher = table.getDoubleArrayTopic("robot_orientation_set").publish();
@@ -59,7 +58,7 @@ public class VisionIOLimelight implements VisionIO {
                 table.getDoubleArrayTopic("botpose_orb_wpiblue").subscribe(new double[] {});
     }
 
-    public VisionIOLimelight useTurret(Supplier<Angle> turretAngle){
+    public VisionIOLimelight useTurret(Supplier<Angle> turretAngle) {
         this.turretAngle = turretAngle;
         return this;
     }
@@ -91,8 +90,7 @@ public class VisionIOLimelight implements VisionIO {
                 tagIds.add((int) rawSample.value[i]);
             }
             Pose3d pose = parsePose(rawSample.value);
-            if(turretAngle != null)
-                pose = rotateByTurret(pose);
+            if (turretAngle != null) pose = rotateByTurret(pose);
             poseObservations.add(
                     new PoseObservation(
                             // Timestamp, based on server timestamp of publish and latency
@@ -120,8 +118,7 @@ public class VisionIOLimelight implements VisionIO {
                 tagIds.add((int) rawSample.value[i]);
             }
             Pose3d pose = parsePose(rawSample.value);
-            if(turretAngle != null)
-                pose = rotateByTurret(pose);
+            if (turretAngle != null) pose = rotateByTurret(pose);
             poseObservations.add(
                     new PoseObservation(
                             // Timestamp, based on server timestamp of publish and latency
@@ -169,15 +166,22 @@ public class VisionIOLimelight implements VisionIO {
                         Math.toRadians(rawLLArray[5])));
     }
 
-    private Pose3d rotateByTurret(Pose3d fieldRelativePose){
+    private Pose3d rotateByTurret(Pose3d fieldRelativePose) {
         return new Pose3d(
-                fieldRelativePose.rotateAround(
-                        new Translation3d(Units.Millimeters.zero(),Units.Millimeters.zero(), Units.Millimeters.of(441.837)),
-                        new Rotation3d(Units.Rotation.zero(), Units.Rotation.zero(), turretAngle.get())
-                ).getTranslation(),
-                new Rotation3d(Units.Rotation.zero(), Units.Rotation.zero(),
-                        Units.Degrees.of(180).minus(turretAngle.get())
-                )
-        );
+                fieldRelativePose
+                        .rotateAround(
+                                new Translation3d(
+                                        Units.Millimeters.zero(),
+                                        Units.Millimeters.zero(),
+                                        Units.Millimeters.of(441.837)),
+                                new Rotation3d(
+                                        Units.Rotation.zero(),
+                                        Units.Rotation.zero(),
+                                        turretAngle.get()))
+                        .getTranslation(),
+                new Rotation3d(
+                        Units.Rotation.zero(),
+                        Units.Rotation.zero(),
+                        Units.Degrees.of(180).minus(turretAngle.get())));
     }
 }

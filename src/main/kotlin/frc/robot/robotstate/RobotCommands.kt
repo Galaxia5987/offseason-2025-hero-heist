@@ -80,8 +80,8 @@ val turretAngleToHub: Angle
                 compensatedShot.turretAngle.measure
             } else turretToRobotHubAngle.measure)
             .wrapAround(
-                SOFTWARE_LIMIT_CONFIG.ReverseSoftLimitThreshold.rad,
-                SOFTWARE_LIMIT_CONFIG.ForwardSoftLimitThreshold.rad
+                SOFTWARE_LIMIT_CONFIG.ReverseSoftLimitThreshold.rot,
+                SOFTWARE_LIMIT_CONFIG.ForwardSoftLimitThreshold.rot
             )
 
 @LoggedOutput(path = COMMAND_NAME_PREFIX)

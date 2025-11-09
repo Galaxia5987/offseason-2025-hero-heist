@@ -1,18 +1,15 @@
 package frc.robot.subsystems.shooter.turret
 
-import com.ctre.phoenix6.controls.MotionMagicVoltage
+import com.ctre.phoenix6.controls.PositionVoltage
 import com.ctre.phoenix6.controls.VoltageOut
 import com.ctre.phoenix6.signals.NeutralModeValue
 import edu.wpi.first.units.measure.Angle
 import edu.wpi.first.units.measure.Voltage
-import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import edu.wpi.first.wpilibj2.command.button.Trigger
 import frc.robot.lib.extensions.deg
-import frc.robot.lib.extensions.onFalse
-import frc.robot.lib.extensions.rot
 import frc.robot.lib.sysid.SysIdable
 import frc.robot.lib.universal_motor.UniversalTalonFX
 import org.littletonrobotics.junction.AutoLogOutput
@@ -28,8 +25,7 @@ private val ligament =
 
 object Turret : SubsystemBase(), SysIdable {
     private val motor = UniversalTalonFX(MOTOR_ID, config = MOTOR_CONFIG)
-    private val hallEffectSensor = DigitalInput(HALL_EFFECT_SENSOR_PORT)
-    private val motionMagicTorque = MotionMagicVoltage(0.0)
+    private val positionVoltage = PositionVoltage(0.0)
     @LoggedOutput var angleSetpoint = 0.deg
     private val voltageRequest = VoltageOut(0.0)
     val inputs
@@ -38,13 +34,6 @@ object Turret : SubsystemBase(), SysIdable {
     init {
         motor.reset()
     }
-
-    val isAtResetPoint =
-        Trigger(hallEffectSensor::get)
-            .and { false }
-            .onTrue(
-                runOnce { motor.reset(0.rot) }
-            ) // TODO: Remove `.and{false}`
 
     val isAtSetpoint = Trigger {
         motor.inputs.position.isNear(angleSetpoint, TOLERANCE)
@@ -63,19 +52,18 @@ object Turret : SubsystemBase(), SysIdable {
             .ignoringDisable(true)
 
     fun setAngle(position: Angle) = runOnce {
-        motor.setControl(motionMagicTorque.withPosition(position))
+        motor.setControl(positionVoltage.withPosition(position))
     }
 
     fun setAngle(position: () -> Angle) = run {
         angleSetpoint = position.invoke()
-        motor.setControl(motionMagicTorque.withPosition(position.invoke()))
+        motor.setControl(positionVoltage.withPosition(position.invoke()))
     }
 
     override fun periodic() {
         motor.updateInputs()
         ligament.setAngle(angleSetpoint.`in`(deg))
         Logger.processInputs("Subsystems/$name", motor.inputs)
-        Logger.recordOutput("Subsystems/$name/isAtResetPoint", isAtResetPoint)
         Logger.recordOutput("Subsystems/$name/isAtSetpoint", isAtSetpoint)
         Logger.recordOutput("Subsystems/$name/Ligament", mechanism)
     }

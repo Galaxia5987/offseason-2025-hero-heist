@@ -20,7 +20,6 @@ import frc.robot.subsystems.shooter.turret.Turret
 import frc.robot.subsystems.vision.Vision
 import frc.robot.subsystems.vision.VisionConstants
 import frc.robot.subsystems.vision.VisionConstants.turretOVName
-import frc.robot.subsystems.vision.VisionIOLimelight
 import frc.robot.subsystems.vision.VisionIOPhotonVision
 import frc.robot.subsystems.vision.VisionIOPhotonVisionSim
 import org.ironmaple.simulation.SimulatedArena
@@ -77,7 +76,21 @@ private val visionIOs =
         Mode.REAL ->
             VisionConstants.OVNameToTransform.map {
                 if (it.key == turretOVName) {
-                    VisionIOLimelight(it.key, { drive.gyroRotation })
+                    VisionIOPhotonVision(it.key) {
+                        Pose3d(
+                                it.value.translation.rotateAround(
+                                    getTranslation3d(z = 441.837.millimeters),
+                                    getRotation3d(yaw = Turret.inputs.position)
+                                ),
+                                getRotation3d(
+                                    yaw =
+                                        it.value.rotation.measureZ -
+                                            Turret.inputs.position,
+                                    pitch = it.value.rotation.measureY
+                                )
+                            )
+                            .toTransform()
+                    }
                 } else {
                     VisionIOPhotonVision(it.key) { it.value }
                 }

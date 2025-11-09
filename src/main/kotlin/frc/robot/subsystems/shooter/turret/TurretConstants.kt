@@ -14,7 +14,6 @@ import frc.robot.lib.extensions.deg
 import frc.robot.lib.extensions.get
 
 val TOLERANCE = 2.deg
-const val HALL_EFFECT_SENSOR_PORT = 7
 const val MOTOR_ID = 7
 val GAINS = Gains(kP = 95.0, kD = 12.0, kS = 0.04, kV = 3.0, kA = 0.5)
 val STATOR_CURRENT_LIMIT = 80.amps
