@@ -2,6 +2,7 @@ package frc.robot.robotstate
 
 import edu.wpi.first.wpilibj2.command.Commands
 import edu.wpi.first.wpilibj2.command.button.Trigger
+import frc.robot.RobotContainer.forceShoot
 import frc.robot.applyLeds
 import frc.robot.drive
 import frc.robot.lib.IS_ENABLED
@@ -21,53 +22,45 @@ import org.team5987.annotation.LoggedOutput
 val isInDeadZone = Trigger {
     val driveTranslation = drive.pose.translation
     !OUTER_SHOOTING_AREA.contains(driveTranslation) ||
-        INNER_SHOOTING_AREA.contains(driveTranslation)
+            INNER_SHOOTING_AREA.contains(driveTranslation)
 }
-
-// TODO: Check this!!
-@LoggedOutput(path = COMMAND_NAME_PREFIX)
-val atShootingRotation =
-    Turret.isAtSetpoint.and(
-        Trigger {
-                drive.pose.rotation.measure.isNear(
-                    swerveCompensationAngle.measure,
-                    ROTATION_TOLERANCE
-                )
-            }
-            .or { disableAutoAlign.get() }
-    )
 
 val isShooting = Trigger { state == RobotState.SHOOTING }
 val isStaticShooting = Trigger { state == RobotState.FIXED_SHOOTING }
 val isIntaking = Trigger { state == RobotState.INTAKING }
 val isIdling = Trigger { state == RobotState.IDLING }
+
+@LoggedOutput(path = COMMAND_NAME_PREFIX)
+val isTurretInRange = Trigger { appliedTurretAngle == turretAngleToHub }
+
 private val hasFrontBall = Roller.hasBall
-val hasBackBall = Hopper.hasBall
+val hasBackBall = Hopper.hasBall // TODO: CHANGE!
 private val ballsEmpty = hasFrontBall.or(hasBackBall).negate()
+
+val shouldShootOnMove = Trigger { !disableCompensation.get() }
 
 fun bindRobotCommands() {
     isShooting.apply {
-        and(ballsEmpty.and { !forceShoot }).onTrue(setIntaking())
-        and(!isInDeadZone).apply {
-            val shouldShootOnMove = Trigger { !disableCompensation.get() }
-            and(atShootingRotation, shouldShootOnMove.negate())
+        and(ballsEmpty.and(forceShoot.negate())).onTrue(setIntaking())
+        and(isInDeadZone.negate()).apply {
+            and(shouldShootOnMove.negate().and(isTurretInRange))
                 .onTrue(startShooting())
             and(shouldShootOnMove).onTrue(startShooting())
         }
-        and((isInDeadZone).or(!atShootingRotation))
-            .onTrue(driveToShootingPoint(disableAutoAlign::get))
+        and((isInDeadZone.or(isTurretInRange.negate())).and(shouldShootOnMove.negate()))
+            .onTrue(driveToShootingPoint())
     }
     isIntaking.apply {
         and(hasFrontBall, hasBackBall)
             .onTrue(Roller.stop(), Hopper.stop(), setShooting())
-        and(hasBackBall, !hasFrontBall).apply {
+        and(hasBackBall, hasFrontBall.negate()).apply {
             onTrue(Hopper.stop())
             and(robotRelativeBallPoses::isNotEmpty, { intakeByVision }).apply {
-                and { !forceShoot }.onTrue(alignToBall(disableAutoAlign::get))
+                and(forceShoot.negate()).onTrue(alignToBall(disableAutoAlign::get))
             }
             onTrue(Roller.intake())
         }
-        and(!hasBackBall, hasFrontBall).apply {
+        and(hasBackBall.negate(), hasFrontBall).apply {
             onTrue(Hopper.startIntake(), Roller.intake())
         }
         and(ballsEmpty).apply {
@@ -91,11 +84,11 @@ fun bindRobotCommands() {
             Flywheel.setVelocity { STATIC_SHOOT_VELOCITY }
         )
     }
-    isIdling.apply { onTrue(Roller.stop(), Hopper.stop(), Flywheel.stop()) }
+    isIdling.apply { onTrue(stopAll().ignoringDisable(true)) }
     applyLeds()
 }
 
-val isDisabled = Trigger { !IS_ENABLED }.onTrue(setIdling())
+val isDisabled = Trigger { !IS_ENABLED }.onTrue(setIdling().ignoringDisable(true))
 
 private fun setRobotState(newState: RobotState) =
     Commands.runOnce({ state = newState })

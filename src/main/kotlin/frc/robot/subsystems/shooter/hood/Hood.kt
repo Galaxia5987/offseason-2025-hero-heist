@@ -30,7 +30,7 @@ object Hood : SubsystemBase(), SysIdable {
             MOTOR_ID,
             config = MOTOR_CONFIG,
             gearRatio = MOTOR_TO_MECHANISM_RATIO,
-            absoluteEncoderOffset = ENCODER_OFFSET
+            absoluteEncoderOffset = -ENCODER_OFFSET
         )
 
     val inputs

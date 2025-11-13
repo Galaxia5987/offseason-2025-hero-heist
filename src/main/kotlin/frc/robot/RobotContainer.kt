@@ -26,12 +26,16 @@ import frc.robot.subsystems.wrist.Wrist
 import org.ironmaple.simulation.SimulatedArena
 import org.littletonrobotics.junction.AutoLogOutput
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser
+import org.team5987.annotation.LoggedOutput
 
 object RobotContainer {
 
     private val driverController = CommandPS5Controller(0)
     private val switchController = CommandGenericHID(1)
     private val autoChooser: LoggedDashboardChooser<Command>
+
+    @LoggedOutput(path= COMMAND_NAME_PREFIX)
+    val forceShoot = driverController.triangle()
 
     enum class SwitchInput(val buttonId: Int) {
         DisableAutoAlign(0),
@@ -70,7 +74,7 @@ object RobotContainer {
                 { -driverController.rightX * 0.8 }
             )
         Turret.defaultCommand = Turret.setAngle { turretAngleToHub }
-        //        Hood.defaultCommand = hoodDefaultCommand()
+        Hood.defaultCommand = hoodDefaultCommand()
         Wrist.defaultCommand = Wrist.open()
     }
 
@@ -87,7 +91,6 @@ object RobotContainer {
 
             povDown().onTrue(setIdling())
             povUp().onTrue(toggleCompensation())
-            triangle().onTrue(setForceShoot()).onFalse(stopForceShoot())
 
             create().whileTrue(Wrist.reset())
         }
