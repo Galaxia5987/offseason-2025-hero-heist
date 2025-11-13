@@ -34,7 +34,7 @@ object RobotContainer {
     private val switchController = CommandGenericHID(1)
     private val autoChooser: LoggedDashboardChooser<Command>
 
-    @LoggedOutput(path= COMMAND_NAME_PREFIX)
+    @LoggedOutput(path = COMMAND_NAME_PREFIX)
     val forceShoot = driverController.triangle()
 
     enum class SwitchInput(val buttonId: Int) {

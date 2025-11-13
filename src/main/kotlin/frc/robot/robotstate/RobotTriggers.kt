@@ -21,7 +21,7 @@ import org.team5987.annotation.LoggedOutput
 val isInDeadZone = Trigger {
     val driveTranslation = drive.pose.translation
     !OUTER_SHOOTING_AREA.contains(driveTranslation) ||
-            INNER_SHOOTING_AREA.contains(driveTranslation)
+        INNER_SHOOTING_AREA.contains(driveTranslation)
 }
 
 val isShooting = Trigger { state == RobotState.SHOOTING }
@@ -49,8 +49,7 @@ fun bindRobotCommands() {
         and(shouldShootOnMove.negate()).apply {
             and(isInDeadZone)
                 .onTrue(alignToShootingPoint(deadZoneAlignmentSetpoint))
-            and(isTurretInRange.negate())
-                .onTrue(alignToShootingPoint())
+            and(isTurretInRange.negate()).onTrue(alignSwerveToHub())
         }
     }
     isIntaking.apply {
@@ -59,7 +58,8 @@ fun bindRobotCommands() {
         and(hasBackBall, hasFrontBall.negate()).apply {
             onTrue(Hopper.stop())
             and(robotRelativeBallPoses::isNotEmpty, { intakeByVision }).apply {
-                and(forceShoot.negate()).onTrue(alignToBall(disableAutoAlign::get))
+                and(forceShoot.negate())
+                    .onTrue(alignToBall(disableAutoAlign::get))
             }
             onTrue(Roller.intake())
         }
@@ -91,7 +91,8 @@ fun bindRobotCommands() {
     applyLeds()
 }
 
-val isDisabled = Trigger { !IS_ENABLED }.onTrue(setIdling().ignoringDisable(true))
+val isDisabled =
+    Trigger { !IS_ENABLED }.onTrue(setIdling().ignoringDisable(true))
 
 private fun setRobotState(newState: RobotState) =
     Commands.runOnce({ state = newState })

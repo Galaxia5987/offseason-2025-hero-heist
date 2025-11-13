@@ -3,6 +3,7 @@ package frc.robot.subsystems.drive
 import edu.wpi.first.math.controller.PIDController
 import edu.wpi.first.math.controller.ProfiledPIDController
 import edu.wpi.first.math.geometry.Pose2d
+import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.math.kinematics.ChassisSpeeds
 import edu.wpi.first.units.Units.MetersPerSecond
 import edu.wpi.first.units.Units.Seconds
@@ -17,6 +18,9 @@ import frc.robot.lib.extensions.get
 import frc.robot.lib.extensions.mps
 import frc.robot.lib.extensions.sec
 import org.littletonrobotics.junction.Logger
+import org.team5987.annotation.LoggedOutput
+
+@LoggedOutput var alignmentGoal: Pose2d = Pose2d()
 
 private val translationController =
     PIDController(LINEAR_KP, LINEAR_KI, LINEAR_KD)
@@ -81,6 +85,7 @@ fun alignToPose(
                 "Alignment/Controllers/CurrentRunningController",
                 holonomicController.second
             )
+            alignmentGoal = goalPose
         })
         .andThen(
             run({
@@ -99,6 +104,24 @@ fun alignToPose(
                 )
         )
         .withName("Drive/AlignToPose")
+
+fun alignToHeading(
+    goalHeading: Rotation2d,
+    linearVelocity: LinearVelocity = 0.mps,
+    tolerance: Pose2d = TOLERANCE,
+    poseSupplier: () -> Pose2d = { drive.pose },
+    atGoalDebounce: Time = Seconds.of(0.1),
+    holonomicController: Pair<TunableHolonomicDriveController, String> =
+        Pair(controller, DEFAULT_CONTROLLER_NAME),
+): Command =
+    alignToPose(
+        goalPose = Pose2d(poseSupplier.invoke().translation, goalHeading),
+        linearVelocity = linearVelocity,
+        tolerance = tolerance,
+        poseSupplier = poseSupplier,
+        atGoalDebounce = atGoalDebounce,
+        holonomicController = holonomicController
+    )
 
 fun profiledAlignToPose(
     goalPose: Pose2d,
