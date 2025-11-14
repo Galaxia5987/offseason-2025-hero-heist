@@ -78,10 +78,6 @@ public class DriveCommands {
                                                     AllianceHelperKt.getIS_RED()
                                                             ? Degrees.of(180)
                                                             : Degrees.zero();
-                                            drive.resetOdometry(
-                                                    new Pose2d(
-                                                            drive.getPose().getTranslation(),
-                                                            new Rotation2d(resetHeading)));
                                             drive.resetGyro(resetHeading);
                                         }))
                 .ignoringDisable(true);

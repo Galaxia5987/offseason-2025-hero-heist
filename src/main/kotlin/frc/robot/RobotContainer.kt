@@ -12,13 +12,16 @@ import frc.robot.autonomous.paths.deploy.pathplanner.AC1SRP
 import frc.robot.autonomous.paths.deploy.pathplanner.BRP2
 import frc.robot.autonomous.paths.deploy.pathplanner.CC2C3
 import frc.robot.lib.Mode
+import frc.robot.lib.extensions.deg
 import frc.robot.lib.extensions.enableAutoLogOutputFor
 import frc.robot.lib.extensions.sec
+import frc.robot.lib.extensions.toRotation2d
 import frc.robot.lib.extensions.volts
 import frc.robot.lib.shooting.toggleCompensation
 import frc.robot.lib.sysid.sysId
 import frc.robot.robotstate.*
 import frc.robot.subsystems.drive.DriveCommands
+import frc.robot.subsystems.drive.alignToHeading
 import frc.robot.subsystems.roller.Roller
 import frc.robot.subsystems.shooter.hood.Hood
 import frc.robot.subsystems.shooter.turret.Turret
@@ -73,7 +76,7 @@ object RobotContainer {
                 { -driverController.leftX },
                 { -driverController.rightX * 0.8 }
             )
-        Turret.defaultCommand = Turret.setAngle { turretAngleToHub }
+        //        Turret.defaultCommand = Turret.setAngle { turretAngleToHub }
         Hood.defaultCommand = hoodDefaultCommand()
         Wrist.defaultCommand = Wrist.open()
     }
@@ -86,9 +89,9 @@ object RobotContainer {
             circle().onTrue(setIntaking())
             L2().onTrue(Roller.intake()).onFalse(Roller.stop())
             R2().onTrue(Roller.outtake()).onFalse(Roller.stop())
-            square().onTrue(setIntaking())
+            square().onTrue(alignToHeading(90.deg.toRotation2d()))
             cross().onTrue(setShooting())
-
+            540
             povDown().onTrue(setIdling())
             povUp().onTrue(toggleCompensation())
 

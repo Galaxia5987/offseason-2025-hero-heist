@@ -107,21 +107,18 @@ fun alignToPose(
 
 fun alignToHeading(
     goalHeading: Rotation2d,
-    linearVelocity: LinearVelocity = 0.mps,
     tolerance: Pose2d = TOLERANCE,
     poseSupplier: () -> Pose2d = { drive.pose },
     atGoalDebounce: Time = Seconds.of(0.1),
-    holonomicController: Pair<TunableHolonomicDriveController, String> =
-        Pair(controller, DEFAULT_CONTROLLER_NAME),
 ): Command =
-    alignToPose(
-        goalPose = Pose2d(poseSupplier.invoke().translation, goalHeading),
-        linearVelocity = linearVelocity,
-        tolerance = tolerance,
-        poseSupplier = poseSupplier,
-        atGoalDebounce = atGoalDebounce,
-        holonomicController = holonomicController
-    )
+    drive.defer {
+        profiledAlignToPose(
+            goalPose = Pose2d(poseSupplier.invoke().translation, goalHeading),
+            tolerance = tolerance,
+            poseSupplier = poseSupplier,
+            atGoalDebounce = atGoalDebounce,
+        )
+    }
 
 fun profiledAlignToPose(
     goalPose: Pose2d,

@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.Commands.parallel
 import edu.wpi.first.wpilibj2.command.Commands.sequence
 import edu.wpi.first.wpilibj2.command.Commands.waitUntil
 import frc.robot.*
+import frc.robot.lib.convertTo360
 import frc.robot.lib.extensions.*
 import frc.robot.lib.getPose2d
 import frc.robot.lib.math.interpolation.InterpolatingDouble
@@ -75,8 +76,11 @@ val angleFromRobotToHub
 @LoggedOutput(path = COMMAND_NAME_PREFIX)
 // +180 degrees since the turret's zero angle is exactly opposite of the swerve's zero angle.
 val turretToRobotHubAngle: Rotation2d
-    get() = -angleFromRobotToHub + Rotation2d.k180deg + drive.pose.rotation
+    get() =
+        (-angleFromRobotToHub + Rotation2d.k180deg + drive.pose.rotation)
+            .convertTo360()
 
+@LoggedOutput(path = COMMAND_NAME_PREFIX)
 val appliedTurretAngle: Angle
     get() =
         if (disableCompensation.get()) {

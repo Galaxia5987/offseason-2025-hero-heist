@@ -1,5 +1,6 @@
 package frc.robot.lib
 
+import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.math.kinematics.ChassisSpeeds
 import edu.wpi.first.wpilibj.GenericHID
 import edu.wpi.first.wpilibj.util.Color
@@ -179,4 +180,10 @@ fun <T : Comparable<T>> T.wrapAround(minimumValue: T, maximumValue: T): T {
     if (this < minimumValue) return maximumValue
     if (this > maximumValue) return minimumValue
     return this
+}
+
+fun Rotation2d.convertTo360():
+    Rotation2d { // Convert angle from (-180,180) -> (0,360)
+    val deg = (this.degrees + 360.0) % 360.0
+    return Rotation2d.fromDegrees(deg)
 }

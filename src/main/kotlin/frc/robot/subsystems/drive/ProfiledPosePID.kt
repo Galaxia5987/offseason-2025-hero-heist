@@ -10,23 +10,22 @@ import org.littletonrobotics.junction.networktables.LoggedNetworkNumber
 import org.team5987.annotation.LoggedOutput
 
 private const val LOGGING_PREFIX = "AutoAlignment"
+private const val TUNING_PATH = "/Tuning/ProfiledPosePID"
 
-private val xGains = LoggedNetworkGains("x Gains", 4.0)
-private val yGains =
-    LoggedNetworkGains(
-        "y Gains",
-    )
+private val xGains = LoggedNetworkGains("X Gains", 4.0)
 
-private val thetaGains = LoggedNetworkGains("ϴ Gains", 6.0)
+private val yGains = LoggedNetworkGains("Y Gains", 4.0)
+
+private val thetaGains = LoggedNetworkGains("Theta Gains", 4.0)
 private val linearMaxVelocity =
-    LoggedNetworkNumber("$LOGGING_PREFIX/linearMaxVelocity", 4.69)
+    LoggedNetworkNumber("$TUNING_PATH/linearMaxVelocity", 4.69)
 private val linearMaxAcceleration =
-    LoggedNetworkNumber("$LOGGING_PREFIX/linearMaxAcceleration", 2.8)
+    LoggedNetworkNumber("$TUNING_PATH/linearMaxAcceleration", 2.8)
 
 private var rotationalMaxVelocity =
-    LoggedNetworkNumber("$LOGGING_PREFIX/rotationMaxVelocity", 7.0)
+    LoggedNetworkNumber("$TUNING_PATH/rotationMaxVelocity", 360.0)
 private var rotationalMaxAcceleration =
-    LoggedNetworkNumber("$LOGGING_PREFIX/rotationMaxAcceleration", 360.0)
+    LoggedNetworkNumber("$TUNING_PATH/rotationMaxAcceleration", 540.0)
 
 private val linearLimits
     get() = Constraints(linearMaxVelocity.get(), linearMaxAcceleration.get())
@@ -74,12 +73,17 @@ var atGoal: Trigger =
 
 fun updateProfiledPIDGains() {
     mapOf(
-            xController to xGains,
-            yController to yGains,
-            thetaController to thetaGains
+            xController to Pair(xGains, linearLimits),
+            yController to Pair(yGains, linearLimits),
+            thetaController to Pair(thetaGains, rotationalLimits)
         )
-        .forEach { (controller, gains) ->
-            controller.setPID(gains.kP.get(), gains.kI.get(), gains.kD.get())
+        .forEach { (controller, pair) ->
+            controller.setPID(
+                pair.first.kP.get(),
+                pair.first.kI.get(),
+                pair.first.kD.get()
+            )
+            controller.constraints = pair.second
         }
 }
 
