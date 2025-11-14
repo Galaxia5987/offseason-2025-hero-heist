@@ -4,6 +4,7 @@ import com.pathplanner.lib.auto.AutoBuilder
 import com.pathplanner.lib.auto.NamedCommands
 import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.geometry.Rotation2d
+import edu.wpi.first.math.geometry.Transform2d
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller
@@ -14,6 +15,7 @@ import frc.robot.autonomous.paths.deploy.pathplanner.CC2C3
 import frc.robot.lib.Mode
 import frc.robot.lib.extensions.deg
 import frc.robot.lib.extensions.enableAutoLogOutputFor
+import frc.robot.lib.extensions.m
 import frc.robot.lib.extensions.sec
 import frc.robot.lib.extensions.toRotation2d
 import frc.robot.lib.extensions.volts
@@ -21,7 +23,7 @@ import frc.robot.lib.shooting.toggleCompensation
 import frc.robot.lib.sysid.sysId
 import frc.robot.robotstate.*
 import frc.robot.subsystems.drive.DriveCommands
-import frc.robot.subsystems.drive.alignToHeading
+import frc.robot.subsystems.drive.profiledAlignToPose
 import frc.robot.subsystems.roller.Roller
 import frc.robot.subsystems.shooter.hood.Hood
 import frc.robot.subsystems.shooter.turret.Turret
@@ -89,9 +91,14 @@ object RobotContainer {
             circle().onTrue(setIntaking())
             L2().onTrue(Roller.intake()).onFalse(Roller.stop())
             R2().onTrue(Roller.outtake()).onFalse(Roller.stop())
-            square().onTrue(alignToHeading(90.deg.toRotation2d()))
+            square()
+                .onTrue(
+                    profiledAlignToPose(
+                        drive.pose +
+                            Transform2d(0.5.m, 0.5.m, 90.deg.toRotation2d())
+                    )
+                )
             cross().onTrue(setShooting())
-            540
             povDown().onTrue(setIdling())
             povUp().onTrue(toggleCompensation())
 
