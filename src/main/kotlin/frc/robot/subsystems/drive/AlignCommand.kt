@@ -19,9 +19,6 @@ import frc.robot.lib.extensions.mps
 import frc.robot.lib.extensions.sec
 import org.littletonrobotics.junction.Logger
 import org.team5987.annotation.LoggedOutput
-
-@LoggedOutput var alignmentGoal: Pose2d = Pose2d()
-
 private val translationController =
     PIDController(LINEAR_KP, LINEAR_KI, LINEAR_KD)
 
@@ -85,7 +82,6 @@ fun alignToPose(
                 "Alignment/Controllers/CurrentRunningController",
                 holonomicController.second
             )
-            alignmentGoal = goalPose
         })
         .andThen(
             run({

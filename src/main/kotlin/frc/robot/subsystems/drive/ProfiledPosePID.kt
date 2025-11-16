@@ -12,6 +12,9 @@ import org.team5987.annotation.LoggedOutput
 private const val LOGGING_PREFIX = "AutoAlignment"
 private const val TUNING_PATH = "/Tuning/ProfiledPosePID"
 
+@LoggedOutput var alignmentGoal: Pose2d = Pose2d()
+
+
 private val xGains = LoggedNetworkGains("X Gains", 4.0)
 
 private val yGains = LoggedNetworkGains("Y Gains", 4.0)
@@ -91,6 +94,7 @@ fun updateProfiledPIDGains() {
 
 fun setGoal(desiredPose: Pose2d) {
     updateProfiledPIDGains()
+    alignmentGoal = desiredPose
     xController.setGoal(desiredPose.x)
     yController.setGoal(desiredPose.y)
     thetaController.setGoal(desiredPose.rotation.radians)
