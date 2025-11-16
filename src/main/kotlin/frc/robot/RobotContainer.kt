@@ -93,10 +93,12 @@ object RobotContainer {
             R2().onTrue(Roller.outtake()).onFalse(Roller.stop())
             square()
                 .onTrue(
-                    profiledAlignToPose(
-                        drive.pose +
-                            Transform2d(0.5.m, 0.5.m, 90.deg.toRotation2d())
-                    )
+                    drive.defer {
+                        profiledAlignToPose(
+                            drive.pose +
+                                Transform2d(0.5.m, 0.5.m, 90.deg.toRotation2d())
+                        )
+                    }
                 )
             cross().onTrue(setShooting())
             povDown().onTrue(setIdling())

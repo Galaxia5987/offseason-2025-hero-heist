@@ -6,7 +6,6 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints
 import edu.wpi.first.wpilibj2.command.button.Trigger
 import frc.robot.lib.LoggedNetworkGains
-import frc.robot.lib.extensions.m
 import org.littletonrobotics.junction.networktables.LoggedNetworkNumber
 import org.team5987.annotation.LoggedOutput
 
@@ -84,6 +83,8 @@ fun updateProfiledPIDGains() {
                 pair.first.kI.get(),
                 pair.first.kD.get()
             )
+            println("MAXVELOCITY ${pair.second.maxVelocity}")
+            println("MAXACCEL ${pair.second.maxAcceleration}")
             controller.constraints = pair.second
         }
 }
@@ -116,8 +117,8 @@ fun setTolerance(pose2d: Pose2d) {
  */
 fun getSpeedSetpoint(botPose: Pose2d): () -> ChassisSpeeds = {
     ChassisSpeeds(
-        xController.calculate(botPose.measureX.`in`(m)),
-        yController.calculate(botPose.measureY.`in`(m)),
+        xController.calculate(botPose.x),
+        yController.calculate(botPose.y),
         thetaController.calculate(botPose.rotation.radians)
     )
 }
