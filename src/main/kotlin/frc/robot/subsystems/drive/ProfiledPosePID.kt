@@ -6,6 +6,9 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints
 import edu.wpi.first.wpilibj2.command.button.Trigger
 import frc.robot.lib.LoggedNetworkGains
+import frc.robot.lib.extensions.deg
+import frc.robot.lib.extensions.get
+import frc.robot.lib.extensions.rad
 import org.littletonrobotics.junction.networktables.LoggedNetworkNumber
 import org.team5987.annotation.LoggedOutput
 
@@ -13,7 +16,6 @@ private const val LOGGING_PREFIX = "AutoAlignment"
 private const val TUNING_PATH = "/Tuning/ProfiledPosePID"
 
 @LoggedOutput var alignmentGoal: Pose2d = Pose2d()
-
 
 private val xGains = LoggedNetworkGains("X Gains", 4.0)
 
@@ -26,9 +28,9 @@ private val linearMaxAcceleration =
     LoggedNetworkNumber("$TUNING_PATH/linearMaxAcceleration", 2.8)
 
 private var rotationalMaxVelocity =
-    LoggedNetworkNumber("$TUNING_PATH/rotationMaxVelocity", 360.0)
+    LoggedNetworkNumber("$TUNING_PATH/rotationMaxVelocity", 540.deg[rad])
 private var rotationalMaxAcceleration =
-    LoggedNetworkNumber("$TUNING_PATH/rotationMaxAcceleration", 540.0)
+    LoggedNetworkNumber("$TUNING_PATH/rotationMaxAcceleration", 360.deg[rad])
 
 private val linearLimits
     get() = Constraints(linearMaxVelocity.get(), linearMaxAcceleration.get())

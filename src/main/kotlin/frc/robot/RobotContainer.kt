@@ -96,7 +96,7 @@ object RobotContainer {
                     drive.defer {
                         profiledAlignToPose(
                             drive.pose +
-                                Transform2d(0.5.m, 0.5.m, 90.deg.toRotation2d())
+                                Transform2d(2.m, 2.m, 90.deg.toRotation2d())
                         )
                     }
                 )

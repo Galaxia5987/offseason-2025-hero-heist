@@ -1,12 +1,14 @@
 package frc.robot.robotstate
 
+import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj2.command.Commands
 import edu.wpi.first.wpilibj2.command.button.Trigger
 import frc.robot.RobotContainer.forceShoot
 import frc.robot.applyLeds
 import frc.robot.drive
-import frc.robot.lib.IS_ENABLED
-import frc.robot.lib.extensions.*
+import frc.robot.lib.extensions.and
+import frc.robot.lib.extensions.onTrue
+import frc.robot.lib.extensions.whileTrue
 import frc.robot.lib.shooting.disableCompensation
 import frc.robot.robotRelativeBallPoses
 import frc.robot.subsystems.roller.Roller
@@ -92,7 +94,7 @@ fun bindRobotCommands() {
 }
 
 val isDisabled =
-    Trigger { !IS_ENABLED }.onTrue(setIdling().ignoringDisable(true))
+    Trigger { DriverStation.isDisabled() }.onTrue(setIdling().ignoringDisable(true))
 
 private fun setRobotState(newState: RobotState) =
     Commands.runOnce({ state = newState })
