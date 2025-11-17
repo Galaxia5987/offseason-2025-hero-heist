@@ -78,7 +78,7 @@ object RobotContainer {
                 { -driverController.leftX },
                 { -driverController.rightX * 0.8 }
             )
-        //        Turret.defaultCommand = Turret.setAngle { turretAngleToHub }
+        Turret.defaultCommand = Turret.setAngle { turretAngleToHub }
         Hood.defaultCommand = hoodDefaultCommand()
         Wrist.defaultCommand = Wrist.open()
     }
@@ -96,7 +96,7 @@ object RobotContainer {
                     drive.defer {
                         profiledAlignToPose(
                             drive.pose +
-                                Transform2d(2.m, 2.m, 90.deg.toRotation2d())
+                                Transform2d(2.m, 2.m, 180.deg.toRotation2d())
                         )
                     }
                 )

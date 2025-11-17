@@ -17,20 +17,20 @@ private const val TUNING_PATH = "/Tuning/ProfiledPosePID"
 
 @LoggedOutput var alignmentGoal: Pose2d = Pose2d()
 
-private val xGains = LoggedNetworkGains("X Gains", 4.0)
+private val xGains = LoggedNetworkGains("X Gains", 8.0)
 
-private val yGains = LoggedNetworkGains("Y Gains", 4.0)
+private val yGains = LoggedNetworkGains("Y Gains", 8.0)
 
-private val thetaGains = LoggedNetworkGains("Theta Gains", 4.0)
+private val thetaGains = LoggedNetworkGains("Theta Gains", 4.0, kD = 0.15)
 private val linearMaxVelocity =
-    LoggedNetworkNumber("$TUNING_PATH/linearMaxVelocity", 4.69)
+    LoggedNetworkNumber("$TUNING_PATH/linearMaxVelocity", 16.5)
 private val linearMaxAcceleration =
-    LoggedNetworkNumber("$TUNING_PATH/linearMaxAcceleration", 2.8)
+    LoggedNetworkNumber("$TUNING_PATH/linearMaxAcceleration", 30.0)
 
 private var rotationalMaxVelocity =
-    LoggedNetworkNumber("$TUNING_PATH/rotationMaxVelocity", 540.deg[rad])
+    LoggedNetworkNumber("$TUNING_PATH/rotationMaxVelocity", 80.0)
 private var rotationalMaxAcceleration =
-    LoggedNetworkNumber("$TUNING_PATH/rotationMaxAcceleration", 360.deg[rad])
+    LoggedNetworkNumber("$TUNING_PATH/rotationMaxAcceleration", 100.0)
 
 private val linearLimits
     get() = Constraints(linearMaxVelocity.get(), linearMaxAcceleration.get())

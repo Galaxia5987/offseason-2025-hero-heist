@@ -3,12 +3,14 @@ package frc.robot.subsystems.shooter.hopper
 import com.ctre.phoenix6.controls.VoltageOut
 import com.revrobotics.ColorSensorV3
 import edu.wpi.first.units.measure.Voltage
+import edu.wpi.first.wpilibj.util.Color
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import edu.wpi.first.wpilibj2.command.button.Trigger
 import frc.robot.CURRENT_MODE
 import frc.robot.lib.Mode
 import frc.robot.lib.colorSimilarity
+import frc.robot.lib.extensions.debounce
 import frc.robot.lib.extensions.volts
 import frc.robot.lib.universal_motor.UniversalTalonFX
 import org.littletonrobotics.junction.Logger
@@ -24,7 +26,7 @@ object Hopper : SubsystemBase() {
     private val voltageRequest = VoltageOut(0.0)
 
     @LoggedOutput
-    val ballColor
+    val ballColor: Color
         get() = colorSensor.color
 
     @LoggedOutput
@@ -36,15 +38,15 @@ object Hopper : SubsystemBase() {
         get() = ballColor.colorSimilarity(BLUE_COLOR)
 
     @LoggedOutput
-    val isBallRed = Trigger { redConfidence > SIMILARITY_THRESHOLD }
+    val isBallRed: Trigger = Trigger { redConfidence > SIMILARITY_THRESHOLD }.debounce(SENSOR_DEBOUNCE)
 
     @LoggedOutput
-    val isBallBlue = Trigger { blueConfidence > SIMILARITY_THRESHOLD }
+    val isBallBlue: Trigger = Trigger { blueConfidence > SIMILARITY_THRESHOLD }.debounce(SENSOR_DEBOUNCE)
 
-    val simulatedHasBall = LoggedNetworkBoolean("/Tuning/Hopper/hasBall", false)
+    private val simulatedHasBall = LoggedNetworkBoolean("/Tuning/Hopper/hasBall", false)
 
     @LoggedOutput
-    val hasBall =
+    val hasBall: Trigger =
         if (CURRENT_MODE == Mode.REAL) isBallBlue.or(isBallRed)
         else Trigger { simulatedHasBall.get() }
 

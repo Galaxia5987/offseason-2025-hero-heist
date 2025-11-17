@@ -3,17 +3,20 @@ package frc.robot.subsystems.roller
 import com.ctre.phoenix6.controls.VoltageOut
 import com.revrobotics.ColorSensorV3
 import edu.wpi.first.units.measure.Voltage
+import edu.wpi.first.wpilibj.util.Color
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import edu.wpi.first.wpilibj2.command.button.Trigger
 import frc.robot.CURRENT_MODE
 import frc.robot.lib.Mode
 import frc.robot.lib.colorSimilarity
+import frc.robot.lib.extensions.debounce
 import frc.robot.lib.extensions.kg2m
 import frc.robot.lib.extensions.kilogramSquareMeters
 import frc.robot.lib.universal_motor.UniversalTalonFX
 import frc.robot.subsystems.shooter.hopper.BLUE_COLOR
 import frc.robot.subsystems.shooter.hopper.RED_COLOR
+import frc.robot.subsystems.shooter.hopper.SENSOR_DEBOUNCE
 import frc.robot.subsystems.shooter.hopper.SIMILARITY_THRESHOLD
 import org.littletonrobotics.junction.Logger
 import org.littletonrobotics.junction.networktables.LoggedNetworkBoolean
@@ -39,7 +42,7 @@ object Roller : SubsystemBase() {
     private val colorSensor = ColorSensorV3(COLOR_SENSOR_PORT)
 
     @LoggedOutput
-    val ballColor
+    val ballColor: Color
         get() = colorSensor.color
 
     @LoggedOutput
@@ -51,15 +54,15 @@ object Roller : SubsystemBase() {
         get() = ballColor.colorSimilarity(BLUE_COLOR)
 
     @LoggedOutput
-    val isBallRed = Trigger { redConfidence > SIMILARITY_THRESHOLD }
+    val isBallRed: Trigger = Trigger { redConfidence > SIMILARITY_THRESHOLD }.debounce(SENSOR_DEBOUNCE)
 
     @LoggedOutput
-    val isBallBlue = Trigger { blueConfidence > SIMILARITY_THRESHOLD }
+    val isBallBlue: Trigger = Trigger { blueConfidence > SIMILARITY_THRESHOLD }.debounce(SENSOR_DEBOUNCE)
 
-    val simulatedHasBall = LoggedNetworkBoolean("/Tuning/Roller/hasBall", false)
+    private val simulatedHasBall = LoggedNetworkBoolean("/Tuning/Roller/hasBall", false)
 
     @LoggedOutput
-    val hasBall =
+    val hasBall: Trigger =
         if (CURRENT_MODE == Mode.REAL) isBallBlue.or(isBallRed)
         else Trigger { simulatedHasBall.get() }
 
