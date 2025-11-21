@@ -9,7 +9,7 @@ import frc.robot.lib.namedRunOnce
 import frc.robot.lib.universal_motor.UniversalTalonFX
 import org.team5987.annotation.LoggedOutput
 
-object Wrist : SubsystemBase() {
+object IntakeWrist : SubsystemBase() {
     var motor = UniversalTalonFX(PORT, config = MOTOR_CONFIG)
     var positionRequest = PositionVoltage(0.0)
     @LoggedOutput

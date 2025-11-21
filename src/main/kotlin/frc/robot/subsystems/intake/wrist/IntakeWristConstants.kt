@@ -32,5 +32,5 @@ enum class WristAngles(val angle: Angle) {
     FEEDER(10.deg),  // ill need to change it
     RED_FOOTHILL(0.deg);
 
-    operator fun invoke() = Wrist.setAngle(this.angle).named(commandName = "SET_${this.name}")
+    operator fun invoke() = IntakeWrist.setAngle(this.angle).named(commandName = "SET_${this.name}")
 }
