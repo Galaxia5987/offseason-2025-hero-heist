@@ -8,7 +8,7 @@ import frc.robot.lib.extensions.deg
 import frc.robot.lib.named
 
 const val PORT = 1
-
+val INTAKE_WRIST_TOLERANCE = 2.deg
 val Gains = Gains(1.0)
 val MOTOR_CONFIG =
     TalonFXConfiguration().apply {
@@ -33,5 +33,5 @@ enum class WristAngles(val angle: Angle) {
     RED_FOOTHILL(0.deg);
 
     operator fun invoke() =
-        IntakeWrist.setAngle(this.angle).named(commandName = "SET_${this.name}")
+        IntakeWrist.setAngle(angle).named(commandName = "set wrist to:${name.lowercase()}")
 }
