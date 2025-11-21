@@ -22,7 +22,7 @@ val MOTOR_CONFIG = TalonFXConfiguration()
 
 val INTAKE = (-12).volts
 
-enum class RollerVoltages(val voltage: Voltage) {
+enum class IntakeRollerVoltages(val voltage: Voltage) {
     GREEN_CITY_BLOCK(INTAKE),
     GREEN_MAIL(INTAKE),
     RED_MAIL(INTAKE),

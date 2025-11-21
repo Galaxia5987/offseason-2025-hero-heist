@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import frc.robot.lib.namedRunOnce
 import frc.robot.lib.universal_motor.UniversalTalonFX
+import frc.robot.subsystems.intake.wrist.IntakeWrist
 import frc.robot.subsystems.intake.wrist.PORT
 
 object IntakeRoller : SubsystemBase() {
@@ -18,4 +19,6 @@ object IntakeRoller : SubsystemBase() {
     fun setVoltage(voltage: Voltage): Command = namedRunOnce {
         motor.setControl(VoltageRequest.withOutput(voltage))
     }
+
+    override fun periodic() = IntakeWrist.motor.updateInputs()
 }
