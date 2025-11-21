@@ -22,7 +22,7 @@ val MOTOR_CONFIG =
             }
     }
 
-enum class WristAngles(val angle: Angle) {
+enum class IntakeWristAngles(val angle: Angle) {
     GREEN_CITY_BLOCK(0.deg),
     GREEN_MAIL(20.deg), // TODO ill need to change it
     RED_MAIL(20.deg),
