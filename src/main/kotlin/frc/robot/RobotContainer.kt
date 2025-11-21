@@ -7,12 +7,14 @@ import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.math.geometry.Transform2d
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine
 import frc.robot.lib.Mode
 import frc.robot.lib.extensions.deg
 import frc.robot.lib.extensions.enableAutoLogOutputFor
 import frc.robot.lib.extensions.m
 import frc.robot.lib.extensions.toRotation2d
+import frc.robot.subsystems.climb.Climb
 import frc.robot.subsystems.drive.DriveCommands
 import frc.robot.subsystems.drive.profiledAlignToPose
 import org.ironmaple.simulation.SimulatedArena
@@ -21,7 +23,7 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser
 
 object RobotContainer {
 
-    private val driverController = CommandPS5Controller(0)
+    private val driverController = CommandXboxController(0)
     private val autoChooser: LoggedDashboardChooser<Command>
 
     init {
@@ -31,7 +33,7 @@ object RobotContainer {
                 "Auto Choices",
                 AutoBuilder.buildAutoChooser()
             )
-        registerAutoCommands()
+//        registerAutoCommands()
         configureButtonBindings()
         configureDefaultCommands()
 
@@ -56,20 +58,22 @@ object RobotContainer {
     }
 
     private fun configureButtonBindings() {
+        driverController.y().onTrue(climb.getUp())
+        driverController.a().onTrue(climb.getDown())
         // reset swerve
-        driverController.apply {
-            options().onTrue(DriveCommands.resetGyro())
+        // driverController.apply {
+        //options().onTrue(DriveCommands.resetGyro())
 
-            square()
-                .onTrue(
-                    drive.defer {
-                        profiledAlignToPose(
-                            drive.pose +
-                                Transform2d(2.m, 2.m, 180.deg.toRotation2d())
-                        )
-                    }
-                )
-        }
+       // square()
+        //        .onTrue(
+        //            drive.defer {
+         //               profiledAlignToPose(
+         //                   drive.pose +
+         //                       Transform2d(2.m, 2.m, 180.deg.toRotation2d())
+         //               )
+          //          }
+          //      )
+//    }
 
         // Reset gyro / odometry
         val resetOdometry =
@@ -87,44 +91,44 @@ object RobotContainer {
                 }
     }
 
-    fun getAutonomousCommand(): Command = autoChooser.get()
+ //   fun getAutonomousCommand(): Command = autoChooser.get()
 
-    private fun registerAutoCommands() {
-        val namedCommands: Map<String, Command> = mapOf()
-
-        NamedCommands.registerCommands(namedCommands)
-
-        // Set up SysId routines
-        autoChooser.addOption(
-            "Drive Wheel Radius Characterization",
-            DriveCommands.wheelRadiusCharacterization()
-        )
-        autoChooser.addOption(
-            "Drive Simple FF Characterization",
-            DriveCommands.feedforwardCharacterization()
-        )
-        autoChooser.addOption(
-            "Drive SysId (Quasistatic Forward)",
-            drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward)
-        )
-        autoChooser.addOption(
-            "Drive SysId (Quasistatic Reverse)",
-            drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse)
-        )
-        autoChooser.addOption(
-            "Drive SysId (Dynamic Forward)",
-            drive.sysIdDynamic(SysIdRoutine.Direction.kForward)
-        )
-        autoChooser.addOption(
-            "Drive SysId (Dynamic Reverse)",
-            drive.sysIdDynamic(SysIdRoutine.Direction.kReverse)
-        )
-
-        autoChooser.addOption(
-            "swerveFFCharacterization",
-            DriveCommands.feedforwardCharacterization()
-        )
-    }
+//    private fun registerAutoCommands() {
+//        val namedCommands: Map<String, Command> = mapOf()
+//
+//        NamedCommands.registerCommands(namedCommands)
+//
+//        // Set up SysId routines
+//        autoChooser.addOption(
+//            "Drive Wheel Radius Characterization",
+//            DriveCommands.wheelRadiusCharacterization()
+//        )
+//        autoChooser.addOption(
+//            "Drive Simple FF Characterization",
+//            DriveCommands.feedforwardCharacterization()
+//        )
+//        autoChooser.addOption(
+//            "Drive SysId (Quasistatic Forward)",
+//            drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward)
+//        )
+//        autoChooser.addOption(
+//            "Drive SysId (Quasistatic Reverse)",
+//            drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse)
+//        )
+//        autoChooser.addOption(
+//            "Drive SysId (Dynamic Forward)",
+//            drive.sysIdDynamic(SysIdRoutine.Direction.kForward)
+//        )
+//        autoChooser.addOption(
+//            "Drive SysId (Dynamic Reverse)",
+//            drive.sysIdDynamic(SysIdRoutine.Direction.kReverse)
+//        )
+//
+//        autoChooser.addOption(
+//            "swerveFFCharacterization",
+//            DriveCommands.feedforwardCharacterization()
+//        )
+//    }
 
     fun resetSimulationField() {
         if (CURRENT_MODE != Mode.SIM) return
@@ -133,3 +137,4 @@ object RobotContainer {
         SimulatedArena.getInstance().resetFieldForAuto()
     }
 }
+
