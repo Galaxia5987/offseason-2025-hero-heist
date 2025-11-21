@@ -12,8 +12,7 @@ import org.team5987.annotation.LoggedOutput
 object IntakeWrist : SubsystemBase() {
     var motor = UniversalTalonFX(PORT, config = MOTOR_CONFIG)
     var positionRequest = PositionVoltage(0.0)
-    @LoggedOutput
-    var setPoint = 0.deg
+    @LoggedOutput var setPoint = 0.deg
 
     fun setAngle(angle: Angle): Command = namedRunOnce {
         setPoint = angle
