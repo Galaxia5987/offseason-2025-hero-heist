@@ -42,9 +42,12 @@ class ConstrainsTest {
         }
 
         // After running long enough, we should be close to goal
-        assertTrue(position > 0.45, "Should not undershoot the goal $position")
         assertTrue(
-            position < 0.55,
+            position > goal - 0.05,
+            "Should not undershoot the goal $position"
+        )
+        assertTrue(
+            position < goal + 0.05,
             "Should not overshoot excessively either $position"
         )
 
