@@ -1,7 +1,10 @@
 package frc.robot.subsystems.intake.wrist
 
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs
+import com.ctre.phoenix6.configs.MotorOutputConfigs
 import com.ctre.phoenix6.configs.TalonFXConfiguration
+import com.ctre.phoenix6.signals.InvertedValue
+import com.ctre.phoenix6.signals.NeutralModeValue
 import edu.wpi.first.units.measure.Angle
 import frc.robot.lib.Gains
 import frc.robot.lib.extensions.deg
@@ -21,6 +24,10 @@ val MOTOR_CONFIG =
                 StatorCurrentLimit = 20.0
                 SupplyCurrentLimit = 40.0
             }
+        MotorOutput = MotorOutputConfigs().apply {
+            Inverted = InvertedValue.Clockwise_Positive
+            NeutralMode = NeutralModeValue.Coast
+        }
     }
 
 enum class IntakeWristAngles(val angle: Angle) {

@@ -22,7 +22,6 @@ object IntakeWrist : SubsystemBase() {
         config = MOTOR_CONFIG
     )
     private val positionRequest = PositionVoltage(0.0)
-
     @LoggedOutput
     var mechanism = LoggedMechanism2d(6.0, 4.0)
     private var root = mechanism.getRoot("Wrist", 3.0, 2.0)
