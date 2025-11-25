@@ -24,10 +24,11 @@ val MOTOR_CONFIG =
                 StatorCurrentLimit = 20.0
                 SupplyCurrentLimit = 40.0
             }
-        MotorOutput = MotorOutputConfigs().apply {
-            Inverted = InvertedValue.Clockwise_Positive
-            NeutralMode = NeutralModeValue.Coast
-        }
+        MotorOutput =
+            MotorOutputConfigs().apply {
+                Inverted = InvertedValue.Clockwise_Positive
+                NeutralMode = NeutralModeValue.Coast
+            }
     }
 
 enum class IntakeWristAngles(val angle: Angle) {
@@ -41,6 +42,7 @@ enum class IntakeWristAngles(val angle: Angle) {
     RED_FOOTHILL(0.deg);
 
     operator fun invoke() =
-        IntakeWrist.setAngle(angle).named("Intake/Wrist/",name)
+        IntakeWrist.setAngle(angle).named("Intake/Wrist/", name)
 }
+
 typealias intakeWrist = IntakeWristAngles

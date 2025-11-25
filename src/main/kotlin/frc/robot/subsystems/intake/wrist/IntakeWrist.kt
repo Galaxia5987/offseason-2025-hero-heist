@@ -15,24 +15,25 @@ import org.littletonrobotics.junction.mechanism.LoggedMechanismLigament2d
 import org.team5987.annotation.LoggedOutput
 
 object IntakeWrist : SubsystemBase() {
-    private val motor = UniversalTalonFX(
-        PORT,
-        simGains  = SIM_GAINS,
-        momentOfInertia = 0.0025.kg2m,
-        config = MOTOR_CONFIG
-    )
+    private val motor =
+        UniversalTalonFX(
+            PORT,
+            simGains = SIM_GAINS,
+            momentOfInertia = 0.0025.kg2m,
+            config = MOTOR_CONFIG
+        )
     private val positionRequest = PositionVoltage(0.0)
-    @LoggedOutput
-    var mechanism = LoggedMechanism2d(6.0, 4.0)
+    @LoggedOutput var mechanism = LoggedMechanism2d(6.0, 4.0)
     private var root = mechanism.getRoot("Wrist", 3.0, 2.0)
     private val ligament =
         root.append(LoggedMechanismLigament2d("WristLigament", 0.25, 90.0))
 
-    @LoggedOutput
-    var setpoint = 0.deg
+    @LoggedOutput var setpoint = 0.deg
 
     @LoggedOutput
-    val atSetPoint = Trigger { motor.inputs.position.isNear(setpoint, INTAKE_WRIST_TOLERANCE) }
+    val atSetPoint = Trigger {
+        motor.inputs.position.isNear(setpoint, INTAKE_WRIST_TOLERANCE)
+    }
 
     fun setAngle(angle: Angle): Command = namedRunOnce {
         setpoint = angle

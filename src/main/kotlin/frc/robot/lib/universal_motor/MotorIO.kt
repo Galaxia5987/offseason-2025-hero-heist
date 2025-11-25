@@ -44,8 +44,8 @@ interface MotorIO {
     fun updateInputs() {}
 
     /**
-     * Updates the latest inputs from motor or simulation and log them. Should be called
-     * periodically.
+     * Updates the latest inputs from motor or simulation and log them. Should
+     * be called periodically.
      */
     fun processInputs(subsystem: String) {}
 

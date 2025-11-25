@@ -72,10 +72,12 @@ class UniversalTalonFX(
     fun updateInputs() = motorIO.updateInputs()
 
     /**
-     * Processes the input. might cause a performance impact if not passed a name parameter
+     * Processes the input. might cause a performance impact if not passed a
+     * name parameter
      */
     fun processInputs(
-        subsystem: String = getDataFromStack(1).className.substringAfterLast('.')
+        subsystem: String =
+            getDataFromStack(1).className.substringAfterLast('.')
     ) = motorIO.processInputs(subsystem)
 
     fun applyConfiguration(config: TalonFXConfiguration) {
