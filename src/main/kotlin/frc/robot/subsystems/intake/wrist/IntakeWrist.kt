@@ -10,8 +10,6 @@ import frc.robot.lib.extensions.get
 import frc.robot.lib.extensions.kg2m
 import frc.robot.lib.namedRunOnce
 import frc.robot.lib.universal_motor.UniversalTalonFX
-import org.littletonrobotics.junction.AutoLogOutput
-import org.littletonrobotics.junction.Logger
 import org.littletonrobotics.junction.mechanism.LoggedMechanism2d
 import org.littletonrobotics.junction.mechanism.LoggedMechanismLigament2d
 import org.team5987.annotation.LoggedOutput
@@ -32,13 +30,13 @@ object IntakeWrist : SubsystemBase() {
         root.append(LoggedMechanismLigament2d("WristLigament", 0.25, 90.0))
 
     @LoggedOutput
-    var setPoint = 0.deg
+    var setpoint = 0.deg
 
     @LoggedOutput
-    val atSetPoint = Trigger { motor.inputs.position.isNear(setPoint, INTAKE_WRIST_TOLERANCE) }
+    val atSetPoint = Trigger { motor.inputs.position.isNear(setpoint, INTAKE_WRIST_TOLERANCE) }
 
     fun setAngle(angle: Angle): Command = namedRunOnce {
-        setPoint = angle
+        setpoint = angle
         ligament.setAngle(angle[deg])
         motor.setControl(positionRequest.withPosition(angle))
     }
