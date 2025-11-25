@@ -19,13 +19,13 @@ val climbConfig = TalonFXConfiguration().apply {
     CurrentLimits =
         CurrentLimitsConfigs().apply {
             SupplyCurrentLimitEnable = true
-            SupplyCurrentLimit = 40.0
+            SupplyCurrentLimit = 80.0
             StatorCurrentLimitEnable = true
-            StatorCurrentLimit = 20.0
+            StatorCurrentLimit = 40.0
         }
 }
 
-val pid = Gains(kP = 1.0)
+val pid = Gains(kP = 0.14 , kD = 0.01)
 
 
 val diameter = 30.mm

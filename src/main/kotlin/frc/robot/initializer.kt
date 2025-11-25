@@ -106,4 +106,3 @@ private val visionIOs =
     }.toTypedArray()
 
 val vision = Vision(drive, *visionIOs)
-val climb = Climb()

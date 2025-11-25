@@ -58,8 +58,8 @@ object RobotContainer {
     }
 
     private fun configureButtonBindings() {
-        driverController.y().onTrue(climb.getUp())
-        driverController.a().onTrue(climb.getDown())
+        driverController.y().onTrue(Climb.getUp())
+        driverController.a().onTrue(Climb.getDown())
         // reset swerve
         // driverController.apply {
         //options().onTrue(DriveCommands.resetGyro())
