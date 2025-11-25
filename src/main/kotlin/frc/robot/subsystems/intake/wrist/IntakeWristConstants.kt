@@ -41,6 +41,6 @@ enum class IntakeWristAngles(val angle: Angle) {
     RED_FOOTHILL(0.deg);
 
     operator fun invoke() =
-        IntakeWrist.setAngle(angle).named(commandName = name)
+        IntakeWrist.setAngle(angle).named("Intake/Wrist/",name)
 }
 typealias intakeWrist = IntakeWristAngles
