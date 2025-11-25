@@ -1,7 +1,6 @@
 package frc.robot.subsystems.intake.wrist
 
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs
-import com.ctre.phoenix6.configs.FeedbackConfigs
 import com.ctre.phoenix6.configs.TalonFXConfiguration
 import edu.wpi.first.units.measure.Angle
 import frc.robot.lib.Gains
@@ -10,11 +9,11 @@ import frc.robot.lib.named
 
 const val PORT = 1
 val INTAKE_WRIST_TOLERANCE = 2.deg
-val RealGains = Gains(1.0)
-val SimGains = Gains(1.0)
+val REAL_GAINS = Gains(1.0)
+val SIM_GAINS = Gains(1.0)
 val MOTOR_CONFIG =
     TalonFXConfiguration().apply {
-        Slot0 = RealGains.toSlotConfig()
+        Slot0 = REAL_GAINS.toSlotConfig()
         CurrentLimits =
             CurrentLimitsConfigs().apply {
                 StatorCurrentLimitEnable = true

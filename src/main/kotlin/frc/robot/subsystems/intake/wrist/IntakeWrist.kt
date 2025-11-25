@@ -17,7 +17,7 @@ import org.team5987.annotation.LoggedOutput
 object IntakeWrist : SubsystemBase() {
     private val motor = UniversalTalonFX(
         PORT,
-        simGains  = SimGains,
+        simGains  = SIM_GAINS,
         momentOfInertia = 0.0025.kg2m,
         config = MOTOR_CONFIG
     )
