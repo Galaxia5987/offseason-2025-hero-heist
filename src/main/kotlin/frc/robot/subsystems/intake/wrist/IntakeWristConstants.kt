@@ -35,3 +35,4 @@ enum class IntakeWristAngles(val angle: Angle) {
     operator fun invoke() =
         IntakeWrist.setAngle(angle).named(commandName = name)
 }
+typealias intakeWrist = IntakeWristAngles
