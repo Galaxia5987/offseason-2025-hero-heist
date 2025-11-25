@@ -17,12 +17,12 @@ import org.littletonrobotics.junction.mechanism.LoggedMechanismLigament2d
 import org.team5987.annotation.LoggedOutput
 
 object IntakeWrist : SubsystemBase() {
-    var motor = UniversalTalonFX(
+    private val motor = UniversalTalonFX(
         PORT,
         momentOfInertia = 0.0025.kg2m,
         config = MOTOR_CONFIG
     )
-    var positionRequest = PositionVoltage(0.0)
+    private val positionRequest = PositionVoltage(0.0)
 
     @LoggedOutput
     var mechanism = LoggedMechanism2d(6.0, 4.0)
