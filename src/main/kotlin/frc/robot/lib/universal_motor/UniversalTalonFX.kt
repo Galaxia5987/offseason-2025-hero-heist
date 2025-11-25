@@ -11,6 +11,7 @@ import frc.robot.lib.Mode
 import frc.robot.lib.extensions.deg
 import frc.robot.lib.extensions.kg2m
 import frc.robot.lib.extensions.m
+import frc.robot.lib.getDataFromStack
 
 /**
  * Represents a universal wrapper for a motor, which abstracts the real and
@@ -69,6 +70,13 @@ class UniversalTalonFX(
     fun reset(angle: Angle = 0.deg) = motorIO.resetInternalEncoder(angle)
 
     fun updateInputs() = motorIO.updateInputs()
+
+    /**
+     * Processes the input. might cause a performance impact if not passed a name parameter
+     */
+    fun processInputs(
+        subsystem: String = getDataFromStack(1).className.substringAfterLast('.')
+    ) = motorIO.processInputs(subsystem)
 
     fun applyConfiguration(config: TalonFXConfiguration) {
         motorIO.applyConfiguration(config)

@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase
 import edu.wpi.first.wpilibj2.command.button.Trigger
 import frc.robot.lib.extensions.deg
 import frc.robot.lib.extensions.get
+import frc.robot.lib.extensions.kg2m
 import frc.robot.lib.namedRunOnce
 import frc.robot.lib.universal_motor.UniversalTalonFX
 import org.littletonrobotics.junction.AutoLogOutput
@@ -16,7 +17,11 @@ import org.littletonrobotics.junction.mechanism.LoggedMechanismLigament2d
 import org.team5987.annotation.LoggedOutput
 
 object IntakeWrist : SubsystemBase() {
-    var motor = UniversalTalonFX(PORT, config = MOTOR_CONFIG)
+    var motor = UniversalTalonFX(
+        PORT,
+        momentOfInertia = 0.0025.kg2m,
+        config = MOTOR_CONFIG
+    )
     var positionRequest = PositionVoltage(0.0)
 
     @LoggedOutput
@@ -37,6 +42,5 @@ object IntakeWrist : SubsystemBase() {
         motor.setControl(positionRequest.withPosition(angle))
     }
 
-    override fun periodic() = motor.updateInputs()
-
+    override fun periodic() = motor.processInputs()
 }
