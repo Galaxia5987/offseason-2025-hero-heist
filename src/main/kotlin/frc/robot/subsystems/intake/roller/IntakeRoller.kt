@@ -20,5 +20,5 @@ object IntakeRoller : SubsystemBase() {
         motor.setControl(VoltageRequest.withOutput(voltage))
     }
 
-    override fun periodic() = IntakeWrist.motor.updateInputs()
+    override fun periodic() = motor.processInputs()
 }

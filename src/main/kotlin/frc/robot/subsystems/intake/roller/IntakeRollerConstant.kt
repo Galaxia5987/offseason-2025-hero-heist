@@ -20,20 +20,20 @@ val MOTOR_CONFIG = TalonFXConfiguration()
         }
     }
 
-val INTAKE = (-12).volts
 
-enum class IntakeRollerVoltages(val voltage: Voltage) {
-    GREEN_CITY_BLOCK(INTAKE),
-    GREEN_MAIL(INTAKE),
-    RED_MAIL(INTAKE),
-    KNOB_FOOTHILL(INTAKE),
-    UPPER_FOOTHILL(INTAKE),
-    LOWER_FOOTHILL(INTAKE),
-    FEEDER(INTAKE),
-    RED_FOOTHILL(INTAKE),
+enum class intakeRoller(val voltage: Voltage) {
+    INTAKE(12.volts),
+    GREEN_CITY_BLOCK(INTAKE.voltage),
+    GREEN_MAIL(INTAKE.voltage),
+    RED_MAIL(INTAKE.voltage),
+    KNOB_FOOTHILL(INTAKE.voltage),
+    UPPER_FOOTHILL(INTAKE.voltage),
+    LOWER_FOOTHILL(INTAKE.voltage),
+    FEEDER(INTAKE.voltage),
+    RED_FOOTHILL(INTAKE.voltage),
     STOP(0.volts),
     OUTTAKE((-12).volts); //TODO I will probably need to change this
 
     operator fun invoke() =
-        IntakeRoller.setVoltage(voltage).named(commandName = "set roller to:$name")
+        IntakeRoller.setVoltage(voltage).named("Intake/Roller/",name)
 }
