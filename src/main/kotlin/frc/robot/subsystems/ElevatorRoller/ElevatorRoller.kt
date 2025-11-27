@@ -16,16 +16,16 @@ object elevatorRoller: SubsystemBase() {
         MOTOR_PORT,
         config = MOTOR_CONFIG
     )
-    var voltageRequest= VoltageOut(0.0.volts)
+    private var voltageRequest= VoltageOut(0.0.volts)
 
-    fun setVoltage(voltage: Voltage): Command{
+    fun setvoltage(voltage: Voltage): Command{
         return Commands.runOnce({MainMotor.setControl(voltageRequest.withOutput(voltage))})
     }
     fun Run (): Command{
-        return Commands.runOnce({(setVoltage(RUN_VOLTAGE))})
+        return setvoltage(RUN_VOLTAGE)
     }
 
     fun Stop(): Command{
-        return Commands.runOnce({setVoltage(STOP_VOLTAGE)})
+        return setvoltage(STOP_VOLTAGE)
     }
 }
