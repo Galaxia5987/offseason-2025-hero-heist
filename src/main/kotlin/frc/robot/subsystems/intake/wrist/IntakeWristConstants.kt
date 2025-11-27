@@ -30,17 +30,3 @@ val MOTOR_CONFIG =
                 NeutralMode = NeutralModeValue.Coast
             }
     }
-
-enum class intakeWrist(val angle: Angle) {
-    GREEN_CITY_BLOCK(0.deg),
-    GREEN_MAIL(20.deg), // TODO ill need to change it
-    RED_MAIL(20.deg),
-    KNOB_FOOTHILL(20.deg),
-    UPPER_FOOTHILL(30.deg),
-    LOWER_FOOTHILL(10.deg),
-    FEEDER(10.deg), // TODO ill need to change it
-    RED_FOOTHILL(0.deg);
-
-    operator fun invoke() =
-        IntakeWrist.setAngle(angle).named("Intake/Wrist/", name)
-}

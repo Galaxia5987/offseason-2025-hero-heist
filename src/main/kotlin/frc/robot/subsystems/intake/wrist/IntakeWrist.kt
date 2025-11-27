@@ -8,37 +8,56 @@ import edu.wpi.first.wpilibj2.command.button.Trigger
 import frc.robot.lib.extensions.deg
 import frc.robot.lib.extensions.get
 import frc.robot.lib.extensions.kg2m
+import frc.robot.lib.named
 import frc.robot.lib.namedRunOnce
 import frc.robot.lib.universal_motor.UniversalTalonFX
 import org.littletonrobotics.junction.mechanism.LoggedMechanism2d
 import org.littletonrobotics.junction.mechanism.LoggedMechanismLigament2d
 import org.team5987.annotation.LoggedOutput
 
-object IntakeWrist : SubsystemBase() {
-    private val motor =
-        UniversalTalonFX(
-            PORT,
-            simGains = SIM_GAINS,
-            momentOfInertia = 0.0025.kg2m,
-            config = MOTOR_CONFIG
-        )
-    private val positionRequest = PositionVoltage(0.0)
-    @LoggedOutput var mechanism = LoggedMechanism2d(6.0, 4.0)
-    private var root = mechanism.getRoot("Wrist", 3.0, 2.0)
-    private val ligament =
-        root.append(LoggedMechanismLigament2d("WristLigament", 0.25, 90.0))
+enum class IntakeWrist(val angle: Angle) {
+    GREEN_CITY_BLOCK(0.deg),
+    GREEN_MAIL(20.deg), // TODO ill need to change it
+    RED_MAIL(20.deg),
+    KNOB_FOOTHILL(20.deg),
+    UPPER_FOOTHILL(30.deg),
+    LOWER_FOOTHILL(10.deg),
+    FEEDER(10.deg), // TODO ill need to change it
+    RED_FOOTHILL(0.deg);
 
-    @LoggedOutput var setpoint = 0.deg
+    operator fun invoke() =
+        setAngle(angle).named("Intake/Wrist/", name)
 
-    @LoggedOutput
-    val atSetPoint = Trigger {
-        motor.inputs.position.isNear(setpoint, INTAKE_WRIST_TOLERANCE)
+    companion object : SubsystemBase() {
+        private val motor =
+            UniversalTalonFX(
+                PORT,
+                simGains = SIM_GAINS,
+                momentOfInertia = 0.0025.kg2m,
+                config = MOTOR_CONFIG
+            )
+        private val positionRequest = PositionVoltage(0.0)
+
+        @LoggedOutput
+        var mechanism = LoggedMechanism2d(6.0, 4.0)
+        private var root = mechanism.getRoot("Wrist", 3.0, 2.0)
+        private val ligament =
+            root.append(LoggedMechanismLigament2d("WristLigament", 0.25, 90.0))
+
+        @LoggedOutput
+        var setpoint = 0.deg
+
+        @LoggedOutput
+        val atSetPoint = Trigger {
+            motor.inputs.position.isNear(setpoint, INTAKE_WRIST_TOLERANCE)
+        }
+
+        fun setAngle(angle: Angle): Command = namedRunOnce {
+            setpoint = angle
+            ligament.setAngle(angle[deg])
+            motor.setControl(positionRequest.withPosition(angle))
+        }
+
+        override fun periodic() = motor.processInputs()
     }
-    fun setAngle(angle: Angle): Command = namedRunOnce {
-        setpoint = angle
-        ligament.setAngle(angle[deg])
-        motor.setControl(positionRequest.withPosition(angle))
-    }
-
-    override fun periodic() = motor.processInputs()
 }
