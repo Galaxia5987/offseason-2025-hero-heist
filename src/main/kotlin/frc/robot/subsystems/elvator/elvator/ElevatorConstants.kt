@@ -10,11 +10,11 @@ import edu.wpi.first.units.measure.Distance
 import frc.robot.lib.extensions.meters
 import frc.robot.lib.extensions.millimeters
 
-val MOTORPORT=0
-val GEARRATIO=0.0                                   //TODO: change this
+val MOTOR_PORT=0
+val GEAR_RATIO=0.0                                   //TODO: change this
 val SPORCKET_DIAMETER : Distance=36.4.millimeters  //TODO: change this
 
-val MOTORCONFIG=
+val MOTOR_CONFIG=
     TalonFXConfiguration().apply {
         MotorOutput=
             MotorOutputConfigs().apply {

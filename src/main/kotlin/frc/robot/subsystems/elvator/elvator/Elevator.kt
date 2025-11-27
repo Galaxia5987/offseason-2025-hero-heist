@@ -15,9 +15,9 @@ import org.littletonrobotics.junction.Logger
 object Elevator: SubsystemBase() {
 private val MainMotor=
     UniversalTalonFX(
-        MOTORPORT,
-        gearRatio = GEARRATIO,
-        config = MOTORCONFIG
+        MOTOR_PORT,
+        gearRatio = GEAR_RATIO,
+        config = MOTOR_CONFIG
     )
     var height= {-> setPoint}
     var setPoint= 0.0.meters
@@ -29,7 +29,7 @@ private val MainMotor=
     fun setPosition(position: Distance): Command {
         setPoint= position
         return Commands.runOnce({MainMotor.setControl(positionVoltage.withPosition(
-            position.toAngle(SPORCKET_DIAMETER, GEARRATIO)
+            position.toAngle(SPORCKET_DIAMETER, GEAR_RATIO)
         ))})
     }
 

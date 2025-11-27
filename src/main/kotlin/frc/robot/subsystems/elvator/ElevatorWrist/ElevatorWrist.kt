@@ -11,14 +11,14 @@ import frc.robot.lib.extensions.radians
 import frc.robot.lib.extensions.volts
 import frc.robot.lib.universal_motor.UniversalTalonFX
 import frc.robot.subsystems.elvator.elvator.Elevator
-import frc.robot.subsystems.elvator.elvator.GEARRATIO
+import frc.robot.subsystems.elvator.elvator.GEAR_RATIO
 import org.team5987.annotation.LoggedOutput
 
-object ElevatorWrist: SubsystemBase() {
-    val MainMotor = UniversalTalonFX(
-        MOTORPORT,
-        gearRatio = GEARRATIO,
-        config = MOTORCONFIG,
+object elevatorWrist: SubsystemBase() {
+   private val MainMotor = UniversalTalonFX(
+        MOTOR_PORT,
+        gearRatio = GREAR_RATIO,
+        config = MOTOR_CONFIG,
         momentOfInertia = 0.5.kilogramSquareMeters
     )
 

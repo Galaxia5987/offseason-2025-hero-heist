@@ -10,8 +10,7 @@ import javax.print.attribute.EnumSyntax
 
 
 val MOTOR_PORT=0
-val GEAR_RATIO=0.0
-val MOTORCONFIG=
+val MOTOR_CONFIG=
     TalonFXConfiguration().apply {
         CurrentLimits =
             CurrentLimitsConfigs().apply {
