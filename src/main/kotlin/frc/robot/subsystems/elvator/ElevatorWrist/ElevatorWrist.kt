@@ -46,7 +46,4 @@ object elevatorWrist: SubsystemBase() {
         return setAngle(WristElevatorAngles.GREEN_HIGH)
     }
 
-    override fun periodic() {
-        MainMotor.inputs
-    }
 }
