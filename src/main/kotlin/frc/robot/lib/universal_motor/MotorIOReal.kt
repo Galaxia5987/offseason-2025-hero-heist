@@ -6,6 +6,7 @@ import com.ctre.phoenix6.hardware.TalonFX
 import edu.wpi.first.units.measure.Angle
 import edu.wpi.first.units.measure.Distance
 import frc.robot.lib.extensions.toDistance
+import org.littletonrobotics.junction.Logger
 
 /**
  * Real implementation of [MotorIO] for interacting with actual TalonFX
@@ -52,5 +53,10 @@ class MotorIOReal(
         inputs.distance = motor.position.value.toDistance(diameter, gearRatio)
         inputs.absoluteEncoderPositionNoOffset =
             motor.position.value - absoluteEncoderOffset
+    }
+
+    override fun processInputs(subsystem: String) {
+        updateInputs()
+        Logger.processInputs("Subsystems/$subsystem", inputs)
     }
 }

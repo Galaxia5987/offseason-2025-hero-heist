@@ -16,6 +16,7 @@ import frc.robot.lib.extensions.rot
 import frc.robot.lib.extensions.toDistance
 import frc.robot.lib.motors.TalonFXSim
 import frc.robot.lib.motors.TalonType
+import org.littletonrobotics.junction.Logger
 
 /**
  * Simulated implementation of [MotorIO] for use during robot simulation.
@@ -65,5 +66,10 @@ class MotorIOSim(
         inputs.velocity = motor.velocity
         inputs.distance =
             Rotations.of(motor.position).toDistance(diameter, gearRatio)
+    }
+
+    override fun processInputs(subsystem: String) {
+        updateInputs()
+        Logger.processInputs("Subsystems/$subsystem", inputs)
     }
 }

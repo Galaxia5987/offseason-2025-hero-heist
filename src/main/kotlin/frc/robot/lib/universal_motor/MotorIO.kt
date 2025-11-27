@@ -44,6 +44,12 @@ interface MotorIO {
     fun updateInputs() {}
 
     /**
+     * Updates the latest inputs from motor or simulation and log them. Should
+     * be called periodically.
+     */
+    fun processInputs(subsystem: String) {}
+
+    /**
      * Base class representing the observable inputs from a motor. This class
      * generates the logging class `LoggedMotorInputs`
      */
