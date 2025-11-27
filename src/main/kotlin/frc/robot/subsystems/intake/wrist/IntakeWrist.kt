@@ -34,7 +34,6 @@ object IntakeWrist : SubsystemBase() {
     val atSetPoint = Trigger {
         motor.inputs.position.isNear(setpoint, INTAKE_WRIST_TOLERANCE)
     }
-
     fun setAngle(angle: Angle): Command = namedRunOnce {
         setpoint = angle
         ligament.setAngle(angle[deg])
