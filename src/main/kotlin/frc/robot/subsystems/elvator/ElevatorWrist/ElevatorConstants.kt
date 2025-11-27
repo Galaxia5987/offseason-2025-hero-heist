@@ -11,11 +11,11 @@ import frc.robot.lib.extensions.millimeters
 import frc.robot.lib.extensions.radians
 
 
-val MOTORPORT=1
+val MOTOR_PORT=1
 val GREAR_RATIO=0.0
 val SPORCKET_DIAMETER : Distance= 0.0.millimeters
 
-val MOTORCONFIG=
+val MOTOR_CONFIG=
     TalonFXConfiguration().apply {
         Slot0 = Slot0Configs().apply { kP = 0.8 }
         CurrentLimits =
@@ -31,6 +31,7 @@ val MOTORCONFIG=
                 ForwardSoftLimitEnable = true
                 ForwardSoftLimitThreshold = 15.5
                 ReverseSoftLimitEnable = true
+                ReverseSoftLimitThreshold= 15.5
             }
     }
     enum class WristElevator_Angles(val angle: Angle){
