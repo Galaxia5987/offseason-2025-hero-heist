@@ -40,19 +40,19 @@ private val MainMotor=
         Logger.recordOutput("levels", setPoint)
     }
 
-   fun GoToPurple_low(): Command {
-       return Commands.runOnce({setPosition(ELEVATOR_HIGHTS.PURPLE_LOW.position)})
+   fun goToPurple_low(): Command {
+       return Commands.runOnce({setPosition(ELEVATOR_HEIGHTS.PURPLE_LOW.position)})
    }
 
-    fun GoToGreen_low(): Command {
-        return Commands.runOnce({setPosition(ELEVATOR_HIGHTS.GREEN_LOW.position)})
+    fun goToGreen_low(): Command {
+        return Commands.runOnce({setPosition(ELEVATOR_HEIGHTS.GREEN_LOW.position)})
     }
 
-    fun GoTofoothiles(): Command {
-        return Commands.runOnce({setPosition(ELEVATOR_HIGHTS.FOOTHILES_LOW.position)})
+    fun goTofoothiles(): Command {
+        return Commands.runOnce({setPosition(ELEVATOR_HEIGHTS.FOOTHILES_LOW.position)})
     }
 
-    fun GoToHumanPlayer_disk(): Command {
-        return Commands.runOnce({setPosition(ELEVATOR_HIGHTS.HUMANPLAYER_DISK.position)})
+    fun goToHumanPlayer_disk(): Command {
+        return Commands.runOnce({setPosition(ELEVATOR_HEIGHTS.HUMANPLAYER_DISK.position)})
     }
 }

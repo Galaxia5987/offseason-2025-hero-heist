@@ -24,7 +24,7 @@ object elevatorWrist: SubsystemBase() {
 
     val setpoint = 0.radians
     val positionRequest= PositionVoltage(0.0.radians)
-    fun setAngle(angles: WristElevator_Angles): Command{
+    fun setAngle(angles: WristElevatorAngles): Command{
         return Commands.runOnce({MainMotor.setControl(positionRequest.withPosition(angles.angle)) })
     }
 
@@ -32,18 +32,18 @@ object elevatorWrist: SubsystemBase() {
     fun setVoltage(voltage: Voltage): Command {
         return Commands.runOnce({MainMotor.setControl(voltageRequest.withOutput(voltage))})
     }
-    fun GoTo_FOOTHILES_MID(): Command{
-       return Commands.runOnce( {setAngle(WristElevator_Angles.FOOTHILES_MID)})
+    fun goTo_FOOTHILES_MID(): Command{
+       return Commands.runOnce( {setAngle(WristElevatorAngles.FOOTHILES_MID)})
     }
-    fun Go_To_FOOTHILES_HIGH(): Command{
-       return Commands.runOnce({setAngle(WristElevator_Angles.FOOTHILES_HIGH)})
+    fun go_To_FOOTHILES_HIGH(): Command{
+       return setAngle(WristElevatorAngles.FOOTHILES_HIGH)
     }
-    fun Go_To_PURPLE_HIGH(): Command{
-      return Commands.runOnce({setAngle(WristElevator_Angles.PURPLE_HIGH)})
+    fun go_To_PURPLE_HIGH(): Command{
+      return setAngle(WristElevatorAngles.PURPLE_HIGH)
     }
 
-    fun Go_To_GREEN_HIGH(): Command{
-        return Commands.runOnce({setAngle(WristElevator_Angles.GREEN_HIGH)})
+    fun go_To_GREEN_HIGH(): Command{
+        return setAngle(WristElevatorAngles.GREEN_HIGH)
     }
 
     override fun periodic() {

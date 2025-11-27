@@ -34,7 +34,7 @@ val MOTOR_CONFIG=
                 ReverseSoftLimitThreshold= 15.5
             }
     }
-    enum class WristElevator_Angles(val angle: Angle){
+    enum class WristElevatorAngles(val angle: Angle){
         INDEALING (0.0.radians),
         FOOTHILES_MID (15.0.radians),
         FOOTHILES_HIGH (30.0.radians),
