@@ -34,7 +34,7 @@ val MOTORCONFIG=
             }
     }
 
-enum class ELEVATOR_HIGHTS(val position: Distance){
+enum class ELEVATOR_HEIGHTS(val position: Distance){
     FOOTHILES_LOW (0.0.meters),
     PURPLE_LOW (868.222.millimeters),
     GREEN_LOW (603.35.millimeters),
