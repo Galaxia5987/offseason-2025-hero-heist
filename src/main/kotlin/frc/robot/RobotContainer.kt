@@ -6,6 +6,8 @@ import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.math.geometry.Transform2d
 import edu.wpi.first.wpilibj2.command.Command
+import edu.wpi.first.wpilibj2.command.Commands
+import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine
@@ -14,6 +16,8 @@ import frc.robot.lib.extensions.deg
 import frc.robot.lib.extensions.enableAutoLogOutputFor
 import frc.robot.lib.extensions.m
 import frc.robot.lib.extensions.toRotation2d
+import frc.robot.lib.extensions.whileFalse
+import frc.robot.lib.extensions.whileTrue
 import frc.robot.subsystems.climb.Climb
 import frc.robot.subsystems.drive.DriveCommands
 import frc.robot.subsystems.drive.profiledAlignToPose
@@ -23,7 +27,7 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser
 
 object RobotContainer {
 
-    private val driverController = CommandXboxController(0)
+    private val driverController = CommandPS5Controller(0)
     private val autoChooser: LoggedDashboardChooser<Command>
 
     init {
@@ -58,8 +62,8 @@ object RobotContainer {
     }
 
     private fun configureButtonBindings() {
-        driverController.y().onTrue(Climb.getUp())
-        driverController.a().onTrue(Climb.getDown())
+        driverController.triangle().whileTrue(Climb.getUp())
+        driverController.cross().whileTrue(Climb.getDown())
         // reset swerve
         // driverController.apply {
         //options().onTrue(DriveCommands.resetGyro())

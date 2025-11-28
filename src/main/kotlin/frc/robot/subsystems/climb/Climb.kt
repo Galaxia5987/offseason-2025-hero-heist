@@ -1,6 +1,8 @@
 package frc.robot.subsystems.climb
 
+import com.ctre.phoenix6.controls.ControlRequest
 import com.ctre.phoenix6.controls.PositionVoltage
+import com.ctre.phoenix6.controls.VoltageOut
 import edu.wpi.first.units.measure.Distance
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.Commands
@@ -8,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase
 import frc.robot.lib.extensions.meters
 import frc.robot.lib.extensions.toAngle
 import frc.robot.lib.extensions.toDistance
+import frc.robot.lib.extensions.volts
 import frc.robot.lib.universal_motor.UniversalTalonFX
 import org.littletonrobotics.junction.Logger
 
@@ -29,7 +32,6 @@ object Climb : SubsystemBase() {
             motor.setControl(
                 positionRequest.withPosition(position.toAngle(diameter, gearRatio))
             )
-            positionMeters = motor.inputs.position.toDistance(diameter, gearRatio)
         })
     }
 
@@ -41,10 +43,11 @@ object Climb : SubsystemBase() {
         return setVoltage(positionDown)
     }
 
+
     override fun periodic() {
         motor.updateInputs()
         Logger.processInputs(name, motor.inputs)
         Logger.recordOutput("setPoint", setPoint)
-        Logger.recordOutput("position", positionMeters)
+        Logger.recordOutput("position", motor.inputs.position.toDistance(diameter, gearRatio))
     }
 }

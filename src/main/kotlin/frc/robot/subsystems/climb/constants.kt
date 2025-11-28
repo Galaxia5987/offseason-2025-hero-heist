@@ -6,6 +6,8 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration
 import com.ctre.phoenix6.signals.InvertedValue
 import com.ctre.phoenix6.signals.NeutralModeValue
 import frc.robot.lib.Gains
+import frc.robot.lib.extensions.cm
+import frc.robot.lib.extensions.m
 import frc.robot.lib.extensions.meters
 import frc.robot.lib.extensions.mm
 
@@ -25,12 +27,12 @@ val climbConfig = TalonFXConfiguration().apply {
         }
 }
 
-val pid = Gains(kP = 0.14 , kD = 0.01)
+val pid = Gains(kP = 0.45 , kD = 0.06)
 
 
-val diameter = 30.mm
+val diameter = 0.3.m
 
-val gearRatio = 1 / 20.54
+val gearRatio = 1 / 12.5
 
 val positionUp = 1.0.meters
 
