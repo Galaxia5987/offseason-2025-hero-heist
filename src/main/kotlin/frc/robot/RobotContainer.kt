@@ -7,6 +7,7 @@ import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.math.geometry.Transform2d
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine
 import frc.robot.lib.Mode
 import frc.robot.lib.extensions.deg
@@ -15,13 +16,14 @@ import frc.robot.lib.extensions.m
 import frc.robot.lib.extensions.toRotation2d
 import frc.robot.subsystems.drive.DriveCommands
 import frc.robot.subsystems.drive.profiledAlignToPose
+import frc.robot.subsystems.shooter.conveyor.Conveyor
 import org.ironmaple.simulation.SimulatedArena
 import org.littletonrobotics.junction.AutoLogOutput
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser
 
 object RobotContainer {
 
-    private val driverController = CommandPS5Controller(0)
+    private val driverController = CommandXboxController(0)
     private val autoChooser: LoggedDashboardChooser<Command>
 
     init {
@@ -56,20 +58,23 @@ object RobotContainer {
     }
 
     private fun configureButtonBindings() {
-        // reset swerve
-        driverController.apply {
-            options().onTrue(DriveCommands.resetGyro())
-
-            square()
-                .onTrue(
-                    drive.defer {
-                        profiledAlignToPose(
-                            drive.pose +
-                                Transform2d(2.m, 2.m, 180.deg.toRotation2d())
-                        )
-                    }
-                )
-        }
+driverController.povUp().onTrue(Conveyor.start())
+        driverController.povDown().onTrue(Conveyor.reverse())
+    driverController.povRight().onTrue(Conveyor.stop())
+//        reset swerve
+//        driverController.apply {
+//            options().onTrue(DriveCommands.resetGyro())
+//
+//            square()
+//                .onTrue(
+//                    drive.defer {
+//                        profiledAlignToPose(
+//                            drive.pose +
+//                                Transform2d(2.m, 2.m, 180.deg.toRotation2d())
+//                        )
+//                    }
+//                )
+//        }
 
         // Reset gyro / odometry
         val resetOdometry =
