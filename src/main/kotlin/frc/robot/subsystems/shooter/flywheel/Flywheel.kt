@@ -5,6 +5,7 @@ import edu.wpi.first.units.measure.AngularVelocity
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.Commands
 import edu.wpi.first.wpilibj2.command.SubsystemBase
+import frc.robot.lib.extensions.rps
 import frc.robot.lib.universal_motor.UniversalTalonFX
 import org.littletonrobotics.junction.Logger
 
@@ -15,10 +16,12 @@ object Flywheel : SubsystemBase(){
         simGains = PID_GAINS
     )
 
+    var setpoint = 0.0.rps
     private val velocityRequest = VelocityVoltage(0.0)
 
     private fun setVelocity(velocity: AngularVelocity): Command {
         return Commands.runOnce({
+            setpoint = velocity
             motor.setControl(velocityRequest.withVelocity(velocity))
         })
     }
