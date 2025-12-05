@@ -1,8 +1,6 @@
 package frc.robot.subsystems.climb
 
-import com.ctre.phoenix6.controls.ControlRequest
 import com.ctre.phoenix6.controls.PositionVoltage
-import com.ctre.phoenix6.controls.VoltageOut
 import edu.wpi.first.units.measure.Distance
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.Commands
@@ -10,44 +8,40 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase
 import frc.robot.lib.extensions.meters
 import frc.robot.lib.extensions.toAngle
 import frc.robot.lib.extensions.toDistance
-import frc.robot.lib.extensions.volts
 import frc.robot.lib.universal_motor.UniversalTalonFX
 import org.littletonrobotics.junction.Logger
+import org.team5987.annotation.LoggedOutput
 
 object Climb : SubsystemBase() {
     val motor = UniversalTalonFX(
-        climbPort,
-        config = climbConfig,
-        simGains = pid
+        PORT,
+        config = CONFIG,
+        simGains = PID_GAINS
     )
 
-    var setPoint = 0.0.meters
+    @LoggedOutput
+    var setpoint = 0.0.meters
     var positionMeters = 0.0.meters
 
-    val positionRequest = PositionVoltage(0.0)
+    private val positionRequest = PositionVoltage(0.0)
 
-    fun setVoltage(position: Distance): Command{
+    fun setPosition(position: Distance): Command{
         return Commands.run({
-            setPoint = position
+            setpoint = position
             motor.setControl(
-                positionRequest.withPosition(position.toAngle(diameter, gearRatio))
+                positionRequest.withPosition(position.toAngle(DIAMETER, GEAR_RATIO))
             )
         })
     }
 
-    fun getUp(): Command{
-        return setVoltage(positionUp)
-    }
+    fun getUp(): Command = setPosition(POSITION_UP)
 
-    fun getDown(): Command{
-        return setVoltage(positionDown)
-    }
+    fun getDown(): Command = setPosition(POSITION_DOWN)
 
 
     override fun periodic() {
         motor.updateInputs()
         Logger.processInputs(name, motor.inputs)
-        Logger.recordOutput("setPoint", setPoint)
-        Logger.recordOutput("position", motor.inputs.position.toDistance(diameter, gearRatio))
+        Logger.recordOutput("position", motor.inputs.position.toDistance(DIAMETER, GEAR_RATIO))
     }
 }
