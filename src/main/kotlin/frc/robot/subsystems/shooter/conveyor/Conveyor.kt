@@ -20,8 +20,8 @@ object Conveyor : SubsystemBase() {
         motor.setControl(voltageRequest.withOutput(voltage))
     }
 
-    fun start(): Command = setVoltage(6.5.volts)
-    fun reverse(): Command = setVoltage(-6.5.volts)
+    fun start(): Command = setVoltage(VOLTAGE_START)
+    fun reverse(): Command = setVoltage(VOLTAGE_REVERSE)
     fun stop(): Command = setVoltage(0.volts)
 
     override fun periodic () {
