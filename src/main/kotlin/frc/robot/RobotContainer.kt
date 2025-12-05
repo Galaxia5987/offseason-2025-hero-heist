@@ -27,7 +27,7 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser
 
 object RobotContainer {
 
-    private val driverController = CommandPS5Controller(0)
+    private val driverController = CommandXboxController(0)
     private val autoChooser: LoggedDashboardChooser<Command>
 
     init {
@@ -62,8 +62,8 @@ object RobotContainer {
     }
 
     private fun configureButtonBindings() {
-        driverController.triangle().whileTrue(Climb.getUp())
-        driverController.cross().whileTrue(Climb.getDown())
+        driverController.y().whileTrue(Climb.getUp())
+        driverController.a().whileTrue(Climb.getDown())
         // reset swerve
         // driverController.apply {
         //options().onTrue(DriveCommands.resetGyro())
