@@ -17,6 +17,7 @@ import frc.robot.lib.extensions.toRotation2d
 import frc.robot.subsystems.drive.DriveCommands
 import frc.robot.subsystems.drive.profiledAlignToPose
 import frc.robot.subsystems.shooter.flywheel.Flywheel
+import kotlinx.serialization.builtins.FloatArraySerializer
 import org.ironmaple.simulation.SimulatedArena
 import org.littletonrobotics.junction.AutoLogOutput
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser
@@ -59,7 +60,8 @@ object RobotContainer {
 
     private fun configureButtonBindings() {
         driverController.b().onTrue(Flywheel.shoot())
-        driverController.x().onFalse(Flywheel.stop())
+        driverController.x().onTrue(Flywheel.stop())
+        driverController.povLeft().onTrue(Flywheel.backIn())
 //        reset swerve
 //        driverController.apply {
 //            options().onTrue(DriveCommands.resetGyro())

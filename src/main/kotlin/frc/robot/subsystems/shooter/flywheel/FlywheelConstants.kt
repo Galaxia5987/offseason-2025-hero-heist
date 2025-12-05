@@ -7,11 +7,13 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration
 import com.ctre.phoenix6.signals.InvertedValue
 import com.ctre.phoenix6.signals.NeutralModeValue
 import frc.robot.lib.Gains
+import frc.robot.lib.extensions.rps
 import frc.robot.lib.extensions.volts
 
 val PORT = 12
-val SHOOT_VOLTAGE = 8.volts
-val STOP_VOLTAGE = 0.volts
+val SHOOT_VELOCITY = 30.rps
+val STOP_VELOCITY = 0.rps
+val BACK_IN_VELOCITY = (-30).rps
 val PID_GAINS = Gains(kP = 1.0, kD = 0.0)
 val CONFIG = TalonFXConfiguration().apply {
     MotorOutput =

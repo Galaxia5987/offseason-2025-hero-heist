@@ -1,31 +1,33 @@
 package frc.robot.subsystems.shooter.flywheel
 
-import com.ctre.phoenix6.controls.VoltageOut
-import edu.wpi.first.units.measure.Voltage
+import com.ctre.phoenix6.controls.VelocityVoltage
+import edu.wpi.first.units.measure.AngularVelocity
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.Commands
 import edu.wpi.first.wpilibj2.command.SubsystemBase
-import frc.robot.lib.extensions.volts
 import frc.robot.lib.universal_motor.UniversalTalonFX
 import org.littletonrobotics.junction.Logger
 
 object Flywheel : SubsystemBase(){
     private val motor = UniversalTalonFX(
         port = PORT,
-        config = CONFIG
+        config = CONFIG,
+        simGains = PID_GAINS
     )
 
-    private val voltageRequest = VoltageOut(0.volts)
+    private val velocityRequest = VelocityVoltage(0.0)
 
-    private fun setVoltage(voltage: Voltage): Command {
+    private fun setVelocity(velocity: AngularVelocity): Command {
         return Commands.runOnce({
-            motor.setControl(voltageRequest.withOutput(voltage))
+            motor.setControl(velocityRequest.withVelocity(velocity))
         })
     }
 
-    fun shoot(): Command = setVoltage(SHOOT_VOLTAGE)
+    fun shoot(): Command = setVelocity(SHOOT_VELOCITY)
 
-    fun stop(): Command = setVoltage(STOP_VOLTAGE)
+    fun backIn(): Command = setVelocity(BACK_IN_VELOCITY)
+
+    fun stop(): Command = setVelocity(STOP_VELOCITY)
 
     override fun periodic() {
         motor.updateInputs()
