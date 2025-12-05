@@ -16,7 +16,8 @@ object Climb : SubsystemBase() {
     val motor = UniversalTalonFX(
         PORT,
         config = CONFIG,
-        simGains = PID_GAINS
+        simGains = PID_GAINS,
+        gearRatio = GEAR_RATIO
     )
 
     @LoggedOutput
