@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj2.command.Commands
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 import frc.robot.lib.extensions.volts
 import frc.robot.lib.universal_motor.UniversalTalonFX
-import org.team5987.annotation.LoggedOutput
+import org.littletonrobotics.junction.Logger
 
 object Flywheel : SubsystemBase(){
     val motor = UniversalTalonFX(
@@ -27,4 +27,8 @@ object Flywheel : SubsystemBase(){
 
     fun stop(): Command = setVoltage(STOP_VOLTAGE)
 
+    override fun periodic() {
+        motor.updateInputs()
+        Logger.processInputs("Subsystems/shooter/flywheel", motor.inputs)
+    }
 }
