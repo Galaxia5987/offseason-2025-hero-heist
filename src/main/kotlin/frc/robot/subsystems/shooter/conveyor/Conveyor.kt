@@ -13,8 +13,8 @@ import org.team5987.annotation.LoggedOutput
 
 object Conveyor : SubsystemBase() {
  private val motor =
-     UniversalTalonFX(port = PORT , gearRatio = GEAR_RATIO, config = CONFIG , simGains = SIM_GAINS )
-    @LoggedOutput var voltageRequest : VoltageOut = VoltageOut(0.0)
+     UniversalTalonFX(port = PORT , gearRatio = GEAR_RATIO, config = CONFIG , simGains = SIM_GAINS  )
+    @LoggedOutput private var voltageRequest : VoltageOut = VoltageOut(0.0)
 
     fun setVoltage (voltage : Voltage) = runOnce {
         motor.setControl(voltageRequest.withOutput(voltage))
