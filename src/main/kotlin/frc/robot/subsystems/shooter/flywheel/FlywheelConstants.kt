@@ -14,7 +14,7 @@ val PORT = 12
 val SHOOT_VELOCITY = 30.rps
 val STOP_VELOCITY = 0.rps
 val BACK_IN_VELOCITY = (-30).rps
-val PID_GAINS = Gains(kP = 1.0, kD = 0.0)
+val PID_GAINS = Gains(kP = 0.023, kD = 0.0)
 val CONFIG = TalonFXConfiguration().apply {
     MotorOutput =
         MotorOutputConfigs().apply {
