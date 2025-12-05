@@ -10,12 +10,12 @@ import frc.robot.lib.universal_motor.UniversalTalonFX
 import org.littletonrobotics.junction.Logger
 
 object Flywheel : SubsystemBase(){
-    val motor = UniversalTalonFX(
+    private val motor = UniversalTalonFX(
         port = PORT,
         config = CONFIG
     )
 
-    val voltageRequest = VoltageOut(0.0.volts)
+    private val voltageRequest = VoltageOut(0.volts)
 
     private fun setVoltage(voltage: Voltage): Command {
         return Commands.runOnce({
