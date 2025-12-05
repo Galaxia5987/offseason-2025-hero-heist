@@ -34,7 +34,7 @@ object IntakeWrist : SubsystemBase() {
     var setpoint = 0.deg
 
     @LoggedOutput
-    val atSetPoint = Trigger {
+    val atSetpoint = Trigger {
         motor.inputs.position.isNear(setpoint, INTAKE_WRIST_TOLERANCE)
     }
 
