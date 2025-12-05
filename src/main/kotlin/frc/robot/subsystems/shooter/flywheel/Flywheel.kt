@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase
 import frc.robot.lib.extensions.rps
 import frc.robot.lib.universal_motor.UniversalTalonFX
 import org.littletonrobotics.junction.Logger
+import org.team5987.annotation.LoggedOutput
 
 object Flywheel : SubsystemBase(){
     private val motor = UniversalTalonFX(
@@ -15,7 +16,7 @@ object Flywheel : SubsystemBase(){
         config = CONFIG,
         simGains = PID_GAINS
     )
-
+    @LoggedOutput
     var setpoint = 0.0.rps
     private val velocityRequest = VelocityVoltage(0.0)
 
