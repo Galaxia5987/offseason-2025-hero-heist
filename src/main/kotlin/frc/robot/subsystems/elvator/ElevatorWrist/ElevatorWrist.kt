@@ -10,8 +10,8 @@ import frc.robot.lib.extensions.kilogramSquareMeters
 import frc.robot.lib.extensions.radians
 import frc.robot.lib.extensions.volts
 import frc.robot.lib.universal_motor.UniversalTalonFX
-import frc.robot.subsystems.elvator.elvator.Elevator
 import frc.robot.subsystems.elvator.elvator.GEAR_RATIO
+import org.littletonrobotics.junction.Logger
 import org.team5987.annotation.LoggedOutput
 
 object elevatorWrist: SubsystemBase() {
@@ -44,6 +44,13 @@ object elevatorWrist: SubsystemBase() {
 
     fun go_To_GREEN_HIGH(): Command{
         return setAngle(WristElevatorAngles.GREEN_HIGH)
+    }
+
+    override fun periodic() {
+        MainMotor.updateInputs()
+        Logger.processInputs(name, MainMotor.inputs)
+        Logger.recordOutput("elevatorWrist", name)
+
     }
 
 }

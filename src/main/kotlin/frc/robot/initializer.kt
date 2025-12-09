@@ -9,6 +9,7 @@ import frc.robot.lib.extensions.toTransform
 import frc.robot.lib.getRotation3d
 import frc.robot.lib.getTranslation3d
 import frc.robot.sim.RapidReactArena
+import frc.robot.subsystems.ElevatorRoller.elevatorRoller
 import frc.robot.subsystems.drive.Drive
 import frc.robot.subsystems.drive.ModuleIOs.ModuleIO
 import frc.robot.subsystems.drive.ModuleIOs.ModuleIOSim
@@ -17,6 +18,8 @@ import frc.robot.subsystems.drive.TunerConstants
 import frc.robot.subsystems.drive.gyroIOs.GyroIO
 import frc.robot.subsystems.drive.gyroIOs.GyroIOPigeon2
 import frc.robot.subsystems.drive.gyroIOs.GyroIOSim
+import frc.robot.subsystems.elvator.ElevatorWrist.elevatorWrist
+import frc.robot.subsystems.elvator.elvator.elevator
 import frc.robot.subsystems.vision.Vision
 import frc.robot.subsystems.vision.VisionConstants
 import frc.robot.subsystems.vision.VisionConstants.turretOVName
@@ -105,3 +108,6 @@ private val visionIOs =
     }.toTypedArray()
 
 val vision = Vision(drive, *visionIOs)
+val elevetorRoller= elevatorRoller
+val elevetorWrist= elevatorWrist
+val elevetor= elevator

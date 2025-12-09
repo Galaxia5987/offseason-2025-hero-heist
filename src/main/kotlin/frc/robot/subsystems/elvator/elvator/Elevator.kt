@@ -12,7 +12,7 @@ import frc.robot.lib.extensions.toAngle
 import frc.robot.lib.universal_motor.UniversalTalonFX
 import org.littletonrobotics.junction.Logger
 
-object Elevator: SubsystemBase() {
+object elevator: SubsystemBase() {
 private val MainMotor=
     UniversalTalonFX(
         MOTOR_PORT,
@@ -54,5 +54,11 @@ private val MainMotor=
 
     fun goToHumanPlayer_disk(): Command {
         return Commands.runOnce({setPosition(ELEVATOR_HEIGHTS.HUMANPLAYER_DISK.position)})
+    }
+
+    override fun simulationPeriodic() {
+        MainMotor.updateInputs()
+        Logger.processInputs(name, MainMotor.inputs)
+        Logger.recordOutput("elevator", name)
     }
 }

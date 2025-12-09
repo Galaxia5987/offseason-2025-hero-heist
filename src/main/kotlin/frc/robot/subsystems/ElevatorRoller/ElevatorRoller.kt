@@ -1,5 +1,6 @@
 package frc.robot.subsystems.ElevatorRoller
 
+import com.ctre.phoenix.Logger
 import com.ctre.phoenix6.configs.TalonFXConfiguration
 import com.ctre.phoenix6.configs.TalonFXConfigurator
 import com.ctre.phoenix6.controls.VoltageOut
@@ -27,5 +28,12 @@ object elevatorRoller: SubsystemBase() {
 
     fun Stop(): Command{
         return setvoltage(STOP_VOLTAGE)
+    }
+
+    override fun periodic() {
+        MainMotor.updateInputs()
+        org.littletonrobotics.junction.Logger.processInputs(name, MainMotor.inputs)
+        org.littletonrobotics.junction.Logger.recordOutput("elevatorRoller", name)
+
     }
 }
