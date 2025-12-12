@@ -16,7 +16,7 @@ object Conveyor : SubsystemBase() {
      UniversalTalonFX(port = PORT , gearRatio = GEAR_RATIO, config = CONFIG , simGains = SIM_GAINS  )
     @LoggedOutput private var voltageRequest : VoltageOut = VoltageOut(0.0)
 
-    fun setVoltage (voltage : Voltage) = runOnce {
+    fun setVoltage (voltage : Voltage) = run{
         motor.setControl(voltageRequest.withOutput(voltage))
     }
 
