@@ -14,7 +14,8 @@ import org.team5987.annotation.LoggedOutput
 object Conveyor : SubsystemBase() {
  private val motor =
      UniversalTalonFX(port = PORT , gearRatio = GEAR_RATIO, config = CONFIG , simGains = SIM_GAINS  )
-    @LoggedOutput private var voltageRequest : VoltageOut = VoltageOut(0.0)
+    @LoggedOutput  var voltageSetpoint = 0.volts
+    private var voltageRequest : VoltageOut = VoltageOut(0.0)
 
     fun setVoltage (voltage : Voltage) = run{
         motor.setControl(voltageRequest.withOutput(voltage))
@@ -26,6 +27,7 @@ object Conveyor : SubsystemBase() {
 
     override fun periodic () {
         motor.updateInputs()
+        Logger.processInputs("Subsystems/conveyor/voltageSetpoint",motor.inputs)
         Logger.processInputs("Subsystems/shooter/conveyor", motor.inputs)
     }
 
