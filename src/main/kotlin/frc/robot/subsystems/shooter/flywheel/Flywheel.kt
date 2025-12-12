@@ -1,10 +1,13 @@
 package frc.robot.subsystems.shooter.flywheel
 
-import com.ctre.phoenix6.controls.VelocityVoltage
+import com.ctre.phoenix6.controls.MotionMagicTorqueCurrentFOC
+import com.ctre.phoenix6.controls.MotionMagicVelocityTorqueCurrentFOC
 import edu.wpi.first.units.measure.AngularVelocity
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.Commands
 import edu.wpi.first.wpilibj2.command.SubsystemBase
+import frc.robot.lib.extensions.deg
+import frc.robot.lib.extensions.m
 import frc.robot.lib.extensions.rps
 import frc.robot.lib.universal_motor.UniversalTalonFX
 import org.littletonrobotics.junction.Logger
@@ -18,7 +21,7 @@ object Flywheel : SubsystemBase(){
     )
     @LoggedOutput
     var setpoint = 0.rps
-    private val velocityRequest = VelocityVoltage(0.0)
+    private val velocityRequest = MotionMagicVelocityTorqueCurrentFOC(0.rps)
 
     private fun setVelocity(velocity: AngularVelocity): Command {
         return Commands.runOnce({
