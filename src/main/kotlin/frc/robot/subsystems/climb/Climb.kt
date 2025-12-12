@@ -22,17 +22,14 @@ object Climb : SubsystemBase() {
 
     @LoggedOutput
     var setpoint = 0.0.meters
-    var positionMeters = 0.0.meters
 
     private val positionRequest = PositionVoltage(0.0)
 
-    fun setPosition(position: Distance): Command{
-        return Commands.run({
-            setpoint = position
-            motor.setControl(
-                positionRequest.withPosition(position.toAngle(DIAMETER, GEAR_RATIO))
-            )
-        })
+    fun setPosition(position: Distance): Command = runOnce {
+        setpoint = position
+        motor.setControl(
+            positionRequest.withPosition(position.toAngle(DIAMETER, GEAR_RATIO))
+        )
     }
 
     fun getUp(): Command = setPosition(POSITION_UP)
@@ -43,6 +40,6 @@ object Climb : SubsystemBase() {
     override fun periodic() {
         motor.updateInputs()
         Logger.processInputs(name, motor.inputs)
-        Logger.recordOutput("position", motor.inputs.position.toDistance(DIAMETER, GEAR_RATIO))
+        Logger.recordOutput("Subsystems/Climb/position", motor.inputs.position.toDistance(DIAMETER, GEAR_RATIO))
     }
 }
