@@ -21,7 +21,7 @@ object Climb : SubsystemBase() {
     )
 
     @LoggedOutput
-    var setpoint = 0.0.meters
+    var setpoint = 0.meters
 
     private val positionRequest = PositionVoltage(0.0)
 
