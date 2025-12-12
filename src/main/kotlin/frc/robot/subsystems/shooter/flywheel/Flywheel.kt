@@ -17,7 +17,7 @@ object Flywheel : SubsystemBase(){
         simGains = PID_GAINS
     )
     @LoggedOutput
-    var setpoint = 0.0.rps
+    var setpoint = 0.rps
     private val velocityRequest = VelocityVoltage(0.0)
 
     private fun setVelocity(velocity: AngularVelocity): Command {
