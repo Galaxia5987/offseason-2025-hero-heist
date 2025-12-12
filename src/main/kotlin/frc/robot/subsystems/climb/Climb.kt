@@ -13,7 +13,7 @@ import org.littletonrobotics.junction.Logger
 import org.team5987.annotation.LoggedOutput
 
 object Climb : SubsystemBase() {
-    val motor = UniversalTalonFX(
+    private val motor = UniversalTalonFX(
         PORT,
         config = CONFIG,
         simGains = PID_GAINS,
