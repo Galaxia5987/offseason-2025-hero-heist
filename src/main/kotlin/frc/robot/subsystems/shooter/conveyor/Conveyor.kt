@@ -28,7 +28,6 @@ object Conveyor : SubsystemBase() {
     override fun periodic () {
         motor.updateInputs()
         Logger.processInputs("Subsystems/conveyor/voltageSetpoint",motor.inputs)
-        Logger.processInputs("Subsystems/shooter/conveyor", motor.inputs)
     }
 
 }
