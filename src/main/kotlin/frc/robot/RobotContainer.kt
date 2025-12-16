@@ -7,14 +7,18 @@ import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.math.geometry.Transform2d
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine
 import frc.robot.lib.Mode
 import frc.robot.lib.extensions.deg
 import frc.robot.lib.extensions.enableAutoLogOutputFor
 import frc.robot.lib.extensions.m
 import frc.robot.lib.extensions.toRotation2d
+import frc.robot.lib.extensions.volts
 import frc.robot.subsystems.drive.DriveCommands
 import frc.robot.subsystems.drive.profiledAlignToPose
+import frc.robot.subsystems.elvator.ElevatorWrist.elevatorWrist
+import frc.robot.subsystems.elvator.elvator.elevator
 import org.ironmaple.simulation.SimulatedArena
 import org.littletonrobotics.junction.AutoLogOutput
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser
@@ -56,35 +60,38 @@ object RobotContainer {
     }
 
     private fun configureButtonBindings() {
-        // reset swerve
-        driverController.apply {
-            options().onTrue(DriveCommands.resetGyro())
-
-            square()
-                .onTrue(
-                    drive.defer {
-                        profiledAlignToPose(
-                            drive.pose +
-                                Transform2d(2.m, 2.m, 180.deg.toRotation2d())
-                        )
-                    }
-                )
-        }
-
-        // Reset gyro / odometry
-        val resetOdometry =
-            if (CURRENT_MODE == Mode.SIM)
-                Runnable {
-                    drive.resetOdometry(
-                        driveSimulation!!.simulatedDriveTrainPose
-                    )
-                }
-            else
-                Runnable {
-                    drive.resetOdometry(
-                        Pose2d(drive.pose.translation, Rotation2d())
-                    )
-                }
+        driverController.cross().onTrue(elevator.goToGreen_low())
+        driverController.triangle().onTrue(elevatorWrist.goTo_FOOTHILES_MID())
+        driverController.square().onTrue(elevetorRoller.Run()).onFalse(elevetorRoller.setvoltage(0.0.volts))
+//        // reset swerve
+//        driverController.apply {
+//            options().onTrue(DriveCommands.resetGyro())
+//
+//            square()
+//                .onTrue(
+//                    drive.defer {
+//                        profiledAlignToPose(
+//                            drive.pose +
+//                                Transform2d(2.m, 2.m, 180.deg.toRotation2d())
+//                        )
+//                    }
+//                )
+//        }
+//
+//        // Reset gyro / odometry
+//        val resetOdometry =
+//            if (CURRENT_MODE == Mode.SIM)
+//                Runnable {
+//                    drive.resetOdometry(
+//                        driveSimulation!!.simulatedDriveTrainPose
+//                    )
+//                }
+//            else
+//                Runnable {
+//                    drive.resetOdometry(
+//                        Pose2d(drive.pose.translation, Rotation2d())
+//                    )
+//                }
     }
 
     fun getAutonomousCommand(): Command = autoChooser.get()
