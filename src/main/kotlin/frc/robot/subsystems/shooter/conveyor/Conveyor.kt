@@ -17,7 +17,7 @@ object Conveyor : SubsystemBase() {
     @LoggedOutput  var voltageSetpoint = 0.volts
     private var voltageRequest : VoltageOut = VoltageOut(0.0)
 
-    fun setVoltage (voltage : Voltage) = run{
+    fun setVoltage (voltage : Voltage) = runOnce {
         motor.setControl(voltageRequest.withOutput(voltage))
     }
 
