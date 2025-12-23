@@ -1,0 +1,31 @@
+package frc.robot.subsystems.shooter
+
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs
+import com.ctre.phoenix6.configs.MotorOutputConfigs
+import com.ctre.phoenix6.configs.Slot0Configs
+import com.ctre.phoenix6.configs.TalonFXConfiguration
+import com.ctre.phoenix6.signals.InvertedValue
+import com.ctre.phoenix6.signals.NeutralModeValue
+import frc.robot.lib.Gains
+import frc.robot.lib.extensions.volts
+
+val PORT = 6;
+val SHOOT_VOLTAGE = 6.0.volts
+val REAL_GAINS = Gains(kP = 1.0 , kD = 0.1)
+val SIM_GAINS = Gains(kP = 1.0 , kD = 0.1)
+val CONFIG = TalonFXConfiguration().apply {
+    Slot0= Slot0Configs().apply {
+    kP = REAL_GAINS.kP
+     kD= REAL_GAINS.kD
+    }
+    MotorOutput = MotorOutputConfigs().apply {
+        Inverted= InvertedValue.CounterClockwise_Positive
+        NeutralMode= NeutralModeValue.Brake
+    }
+    CurrentLimits= CurrentLimitsConfigs().apply {
+        SupplyCurrentLimitEnable= true
+        StatorCurrentLimitEnable = true
+        SupplyCurrentLimit = 20.0
+        StatorCurrentLimit = 10.0
+    }
+}
