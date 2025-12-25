@@ -14,7 +14,7 @@ val VOLTAGE_START=5.volts
 val VOLTAGE_REVERSE=-5.volts
 val REAL_GAINS = Gains(kP = 1.0 , kD= 0.1)
 val SIM_GAINS = Gains(kP = 1.0 , kD = 0.1)
-val config = TalonFXConfiguration().apply {
+val CONFIG = TalonFXConfiguration().apply {
 
     Slot0 = Slot0Configs().apply {
        kP=REAL_GAINS.kP
